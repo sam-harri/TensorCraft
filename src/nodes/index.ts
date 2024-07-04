@@ -9,7 +9,6 @@ import ReLULayerNode from "./ActivationFunctions/ReluNode";
 import SigmoidNode from "./ActivationFunctions/SigmoidNode";
 import TanhNode from "./ActivationFunctions/TanhNode";
 import Conv1DLayerNode from "./Convolutions/Conv1DLayerNode";
-import Conv2DLayerNode from "./Convolutions/Conv2DLayerNode";
 import BatchNorm1dLayerNode from "./Normalization/BatchNorm1DLayerNode";
 import TabularInputNode from "./Input/TabularInputNode";
 import TimeseriesInputNode from "./Input/TimeseriesInputNode";
@@ -38,7 +37,6 @@ export const nodeTypes = {
   "regression-output": RegressionOutputNode,
 
   "conv1d": Conv1DLayerNode,
-  "conv2d": Conv2DLayerNode,
   "batchnorm-1d": BatchNorm1dLayerNode,
 
   "tanh": TanhNode,

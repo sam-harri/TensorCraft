@@ -4,6 +4,7 @@ import Dropdown from '../../components/Dropdown';
 import Hint from '../../components/Hint';
 import Checkbox from '../../components/Checkbox';
 import useStore from '../../state/store';
+import DeleteNode from '../../components/DeleteNode';
 
 export type FullyConnectedNodeData = {
   numNeurons: number | null;
@@ -14,8 +15,11 @@ export type FullyConnectedNodeData = {
 
 const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (props) => {
   const updateNodeData = useStore((state) => state.updateNodeData);
-  const { numNeurons, bias } = props.data;
+  const { bias } = props.data;
+  const [numNeurons, setNumNeurons] = useState<number | null>(props.data.numNeurons ?? null);
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [numNeuronsInput, setNumNeuronsInput] = useState<string>(numNeurons !== null ? numNeurons.toString() : '');
+  const [numNeuronsError, setNumNeuronsError] = useState<string | null>(null);
 
   useEffect(() => {
     const inputSize = props.data.inputSize;
@@ -29,10 +33,20 @@ const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (pr
     }
   }, [props.data.inputSize, numNeurons, updateNodeData, props.id]);
 
-  const handleNumNeuronsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value ? Number(e.target.value) : null;
-    updateNodeData(props.id, { numNeurons: value });
-  };
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const value = numNeuronsInput ? Number(numNeuronsInput) : null;
+      if (value !== null && value < 1) {
+        setNumNeuronsError('Number of neurons must be at least 1.');
+      } else {
+        setNumNeuronsError(null);
+        updateNodeData(props.id, { numNeurons: value });
+        setNumNeurons(value);
+      }
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, [numNeuronsInput, updateNodeData, props.id]);
 
   const handleBiasChange = (checked: boolean) => {
     updateNodeData(props.id, { bias: checked });
@@ -51,6 +65,7 @@ const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (pr
           className='rounded-full h-10 w-10 mr-4'
         />
         <div className='flex-grow font-semibold text-gray-800 text-left'>Linear</div>
+        <DeleteNode nodeId={props.id} />
         <div className='text-gray-500 ml-2'>
           <Dropdown isCollapsed={isCollapsed} />
         </div>
@@ -62,13 +77,14 @@ const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (pr
             <div className='flex items-center'>
               <input
                 type='number'
-                className='mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
-                value={numNeurons !== null ? numNeurons : ''}
-                onChange={handleNumNeuronsChange}
+                className='mt-1 block w-full rounded shadow-sm sm:text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none'
+                value={numNeuronsInput}
+                onChange={(e) => setNumNeuronsInput(e.target.value)}
                 style={{ padding: '10px', height: '40px' }}
               />
               <Hint message='The number of neurons in the fully connected layer.' />
             </div>
+            {numNeuronsError && <p className="text-red-500 text-xs mt-1">{numNeuronsError}</p>}
           </div>
 
           <div className='mb-2 flex items-center'>

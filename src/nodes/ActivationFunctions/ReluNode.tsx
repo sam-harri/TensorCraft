@@ -4,6 +4,7 @@ import Dropdown from '../../components/Dropdown';
 import useStore from '../../state/store';
 import Hint from '../../components/Hint';
 import Checkbox from '../../components/Checkbox';
+import DeleteNode from '../../components/DeleteNode';
 
 export type ReLULayerNodeData = {
   inputSize: string | null;
@@ -42,6 +43,7 @@ const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
           className="rounded-full h-10 w-10 mr-4"
         />
         <div className="flex-grow font-semibold text-gray-800 text-left">ReLU</div>
+        <DeleteNode nodeId={props.id} />
         <div className="text-gray-500 ml-2">
           <Dropdown isCollapsed={isCollapsed} />
         </div>

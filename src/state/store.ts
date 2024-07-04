@@ -25,34 +25,34 @@ type RFState = {
   setEdges: (edges: Edge[] | ((edges: Edge[]) => Edge[])) => void;
   updateNodeData: (nodeId: string, data: any) => void;
   updateChildren: (parentId: string) => void;
+  addNode: (node: Node) => void;
+  deleteNode: (nodeId: string) => void;
 };
 
 const useStore = create<RFState>((set, get) => ({
   nodes: [
-    {
-      id: 'a',
-      type: 'tabular-input',
-      position: { x: 0, y: 0 },
-      data: { numFeatures: null, batchSize: null }
-    },
-    {
-      id: 'b',
-      type: 'linear-layer',
-      position: { x: 400, y: 0 },
-      data: { numNeurons: null, inputSize: null, outputSize: null, bias: true }
-    },
-    {
-      id: 'c',
-      type: 'tanh',
-      position: { x: 800, y: 0 },
-      data: { inputSize: null, outputSize: null }
-    }
+    // {
+    //   id: 'a',
+    //   type: 'tabular-input',
+    //   position: { x: 0, y: 0 },
+    //   data: { numFeatures: null, batchSize: null }
+    // },
+    // {
+    //   id: 'b',
+    //   type: 'linear',
+    //   position: { x: 400, y: 0 },
+    //   data: { numNeurons: null, inputSize: null, outputSize: null, bias: true }
+    // },
+    // {
+    //   id: 'c',
+    //   type: 'tanh',
+    //   position: { x: 800, y: 0 },
+    //   data: { inputSize: null, outputSize: null }
+    // }
   ],
   edges: [
-    // { id: "b->c", source: "b", target: "c", animated: true},
-    // { id: "c->d", source: "c", target: "d", animated: true },
-    // { id: "d->e", source: "d", target: "e", animated: true },
   ],
+
   onNodesChange: (changes: NodeChange[]) => {
     set({
       nodes: applyNodeChanges(changes, get().nodes),
@@ -113,6 +113,29 @@ const useStore = create<RFState>((set, get) => ({
       if (childNode) {
         updateNodeData(childNode.id, { inputSize: parentNode.data.outputSize });
       }
+    });
+  },
+  addNode: (node: Node) => {
+    set({
+      nodes: [...get().nodes, node],
+    });
+  },
+  deleteNode: (nodeId: string) => {
+    const { edges, updateNodeData } = get();
+    
+    // Find children of the node to be deleted
+    const childrenEdges = edges.filter((edge) => edge.source === nodeId);
+    const childrenIds = childrenEdges.map(edge => edge.target);
+
+    // Remove the node and its edges
+    set((state) => ({
+      nodes: state.nodes.filter((node) => node.id !== nodeId),
+      edges: state.edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
+    }));
+
+    // Update children nodes
+    childrenIds.forEach((childId) => {
+      updateNodeData(childId, { inputSize: null });
     });
   },
 }));

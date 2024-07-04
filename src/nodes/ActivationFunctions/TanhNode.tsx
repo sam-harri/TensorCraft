@@ -4,6 +4,7 @@ import { NodeProps, Handle, Position } from 'reactflow';
 import Dropdown from '../../components/Dropdown';
 import useStore from '../../state/store';
 import Hint from '../../components/Hint';
+import DeleteNode from '../../components/DeleteNode';
 
 export type TanhLayerNodeData = {
   inputSize: string | null;
@@ -36,6 +37,7 @@ const TanhNode: React.FC<NodeProps<TanhLayerNodeData>> = (props) => {
           className="rounded-full h-10 w-10 mr-4"
         />
         <div className="flex-grow font-semibold text-gray-800 text-left">Tanh</div>
+        <DeleteNode nodeId={props.id} />
         <div className="text-gray-500 ml-2">
           <Dropdown isCollapsed={isCollapsed} />
         </div>

@@ -5,7 +5,11 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      translate: {
+        '64-minus-1px': 'calc(16rem - 1px)', // 16rem is the equivalent of translate-x-64
+      },
+    },
   },
   plugins: [],
 }

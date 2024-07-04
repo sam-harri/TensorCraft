@@ -43,7 +43,7 @@ const DeletableEdge: React.FC<CustomEdgeProps> = ({
       <EdgeLabelRenderer>
         <div className='group'>
           <button
-            className='absolute transform -translate-x-1/2 -translate-y-1/2 border border-2-gray-500 text-gray-500 bg-white rounded-full w-6 h-6 text-xs flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
+            className='absolute transform -translate-x-1/2 -translate-y-1/2 border border-2-gray-500 text-white bg-red-400 rounded-full w-6 h-6 text-xs flex items-center justify-center pointer-events-auto opacity-0 group-hover:opacity-100 transition-opacity duration-200 ease-in-out'
             style={{ left: `${labelX}px`, top: `${labelY}px` }}
             onClick={handleDelete}
           >

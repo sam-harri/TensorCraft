@@ -9,7 +9,7 @@ export type TimeseriesInputLayerNodeData = {
   numFeatures: number | null;
   batchSize: number | null;
   sequenceLength: number | null;
-  outputSize: string;
+  outputShape: string;
 };
 
 const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (props) => {
@@ -17,7 +17,7 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
   const [numFeatures, setNumFeatures] = useState<number | null>(props.data.numFeatures ?? null);
   const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
   const [sequenceLength, setSequenceLength] = useState<number | null>(props.data.sequenceLength ?? null);
-  const [outputSize, setOutputSize] = useState<string>("");
+  const [outputShape, setOutputShape] = useState<string>("");
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [numFeaturesError, setNumFeaturesError] = useState<string | null>(null);
   const [batchSizeError, setBatchSizeError] = useState<string | null>(null);
@@ -28,8 +28,8 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
 
   useEffect(() => {
     const output = `(${batchSize ?? 'N'}, ${numFeatures ?? 'C'}, ${sequenceLength ?? 'L'})`;
-    setOutputSize(output); // Update output size to PyTorch format [N, C, L]
-    updateNodeData(props.id, { outputSize: output });
+    setOutputShape(output); // Update output size to PyTorch format [N, C, L]
+    updateNodeData(props.id, { outputShape: output });
   }, [numFeatures, batchSize, sequenceLength, updateNodeData, props.id]);
 
   useEffect(() => {
@@ -79,7 +79,6 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
 
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
-      <Handle type="target" position={Position.Left} isConnectable={true} />
       <div
         className="flex items-center p-1 cursor-pointer"
         onClick={() => setIsCollapsed(!isCollapsed)}
@@ -143,7 +142,7 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
             <label className="block text-gray-600 text-sm">Output Size:</label>
             <div className="flex items-center">
               <div className="mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm bg-gray-100 p-2">
-                {outputSize}
+                {outputShape}
               </div>
               <Hint message="The shape of the tensor is (BatchSize x NumFeatures x SequenceLength)." />
             </div>

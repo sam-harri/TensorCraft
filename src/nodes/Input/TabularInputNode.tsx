@@ -8,24 +8,27 @@ import DeleteNode from '../../components/DeleteNode';
 export type TabularInputLayerNodeData = {
   numFeatures: number | null;
   batchSize: number | null;
-  outputSize: string;
+  outputShape: string | null;
 };
 
 const TabularInputNode: React.FC<NodeProps<TabularInputLayerNodeData>> = (props) => {
   const { updateNodeData } = useStore();
-  const [numFeatures, setNumFeatures] = useState<number | null>(props.data.numFeatures ?? null);
-  const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
-  const [outputSize, setOutputSize] = useState<string>("");
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [numFeaturesError, setNumFeaturesError] = useState<string | null>(null);
-  const [batchSizeError, setBatchSizeError] = useState<string | null>(null);
+  
+  const [numFeatures, setNumFeatures] = useState<number | null>(props.data.numFeatures ?? null);
   const [numFeaturesInput, setNumFeaturesInput] = useState<string>(numFeatures !== null ? numFeatures.toString() : '');
+  const [numFeaturesError, setNumFeaturesError] = useState<string | null>(null);
+
+  const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
+  const [batchSizeError, setBatchSizeError] = useState<string | null>(null);
   const [batchSizeInput, setBatchSizeInput] = useState<string>(batchSize !== null ? batchSize.toString() : '');
+  
+  const [outputShape, setOutputShape] = useState<string>("");
 
   useEffect(() => {
     const output = `(${batchSize ?? 'N'}, ${numFeatures ?? 'C'})`;
-    setOutputSize(output); // Update output size to PyTorch format [N, C]
-    updateNodeData(props.id, { outputSize: output });
+    setOutputShape(output); // Update output size to PyTorch format [N, C]
+    updateNodeData(props.id, { outputShape: output });
   }, [numFeatures, batchSize, updateNodeData, props.id]);
 
   useEffect(() => {
@@ -107,10 +110,10 @@ const TabularInputNode: React.FC<NodeProps<TabularInputLayerNodeData>> = (props)
             {batchSizeError && <p className="text-red-500 text-xs mt-1">{batchSizeError}</p>}
           </div>
           <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Output Size:</label>
+            <label className="block text-gray-600 text-sm">Output Shape:</label>
             <div className="flex items-center">
               <div className="mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm bg-gray-100 p-2">
-                {outputSize}
+                {outputShape}
               </div>
               <Hint message="The shape of the tensor is (BatchSize x NumFeatures)." />
             </div>

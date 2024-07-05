@@ -14,20 +14,6 @@ import TabularInputNode from "./Input/TabularInputNode";
 import TimeseriesInputNode from "./Input/TimeseriesInputNode";
 import ImageInputNode from "./Input/ImageInputNode";
 
-// export default [
-//   {
-//     id: 'a',
-//     type: 'tabular-input',
-//     position: { x: 0, y: 0 },
-//     data: { numFeatures: null, batchSize: null }
-//   },
-//   {
-//     id: 'b',
-//     type: 'linear-layer',
-//     position: { x: 400, y: 0 },
-//     data: { numNeurons: null, inputSize: null, outputSize: null, bias: true }
-//   },
-// ] satisfies Node[];
 
 export const nodeTypes = {
   "position-logger": PositionLoggerNode,
@@ -35,8 +21,6 @@ export const nodeTypes = {
   "fully-connected-layer": FullyConnectedLayerNode,
   "dropout-layer": DropoutLayerNode,
   "regression-output": RegressionOutputNode,
-
-  "conv1d": Conv1DLayerNode,
   "batchnorm-1d": BatchNorm1dLayerNode,
 
   "tanh": TanhNode,
@@ -46,6 +30,7 @@ export const nodeTypes = {
   "tabular-input": TabularInputNode,
   "timeseries-input": TimeseriesInputNode,
   "image-input": ImageInputNode,
+  "conv1d": Conv1DLayerNode,
 } satisfies NodeTypes;
 
 //TODO timeseries-input
@@ -57,8 +42,8 @@ export const initialData = {
   },
   "relu": {
     inputSize: null,
-    outputSize: null, inpalce:
-    false
+    outputSize: null,
+    inpalce: false
   },
   "sigmoid": {
     inputSize: null,
@@ -66,13 +51,14 @@ export const initialData = {
   },
   "linear": {
     numNeurons: null,
-    inputSize: null,
-    outputSize: null,
+    inputShape: null,
+    outputShape: null,
     bias: true
   },
   "tabular-input": {
     numFeatures: null,
-    batchSize: null
+    batchSize: null,
+    outputShape: null,
   },
   "timeseries-input": {
     numFeatures: null,
@@ -85,6 +71,15 @@ export const initialData = {
     height: null,
     width: null
   },
+  "conv1d": { 
+    numFilters: null,
+    kernelSize: null,
+    stride: null,
+    padding: null,
+    dilation: null,
+    inputShape: null,
+    outputShape: null,
+  }
 }
 
 export type NodeType = keyof typeof initialData;

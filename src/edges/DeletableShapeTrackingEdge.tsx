@@ -33,7 +33,7 @@ const DeletableEdge: React.FC<CustomEdgeProps> = ({
   });
 
   const handleDelete = () => {
-    updateNodeData(target, { inputSize: null });
+    updateNodeData(target, { inputShape: null });
     setEdges((edges) => edges.filter((e) => e.id !== id));
   };
 

@@ -7,24 +7,28 @@ import Checkbox from '../../components/Checkbox';
 import DeleteNode from '../../components/DeleteNode';
 
 export type ReLULayerNodeData = {
-  inputSize: string | null;
-  outputSize: string | null;
+  inputShape: string | null;
+  outputShape: string | null;
   inplace: boolean;
 };
 
 const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
   const updateNodeData = useStore((state) => state.updateNodeData);
-  const { inplace } = props.data;
+  const nodes = useStore((state) => state.nodes);
+  console.table(nodes);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
+  const { inplace } = props.data;
+
   useEffect(() => {
-    const inputSize = props.data.inputSize;
-    if (inputSize) {
-      updateNodeData(props.id, { outputSize: inputSize });
+    console.log(`ReluNode props.data ${props.data.inputShape}`)
+    const inputShape = props.data.inputShape;
+    if (inputShape) {
+      updateNodeData(props.id, { outputShape: inputShape });
     } else {
-      updateNodeData(props.id, { outputSize: 'Not Connected' });
+      updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
-  }, [props.data.inputSize, updateNodeData, props.id]);
+  }, [props.data.inputShape, updateNodeData, props.id]);
 
   const handleInplaceChange = (checked: boolean) => {
     updateNodeData(props.id, { inplace: checked });
@@ -51,19 +55,19 @@ const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
       {!isCollapsed && (
         <div className="p-4 border-t border-gray-200">
           <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Input Size:</label>
+            <label className="block text-gray-600 text-sm">Input Shape:</label>
             <div className="flex items-center">
               <div className="mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm bg-gray-100 p-2">
-                {props.data.inputSize ? props.data.inputSize : 'Not Connected'}
+                {props.data.inputShape ? props.data.inputShape : 'Not Connected'}
               </div>
               <Hint message="The shape of the input tensor." />
             </div>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Output Size:</label>
+            <label className="block text-gray-600 text-sm">Output Shape:</label>
             <div className="flex items-center">
               <div className="mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm bg-gray-100 p-2">
-                {props.data.outputSize ? props.data.outputSize : 'Not Connected'}
+                {props.data.outputShape ? props.data.outputShape : 'Not Connected'}
               </div>
               <Hint message="The shape of the output tensor. Same as input shape." />
             </div>

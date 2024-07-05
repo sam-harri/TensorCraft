@@ -31,24 +31,6 @@ type RFState = {
 
 const useStore = create<RFState>((set, get) => ({
   nodes: [
-    // {
-    //   id: 'a',
-    //   type: 'tabular-input',
-    //   position: { x: 0, y: 0 },
-    //   data: { numFeatures: null, batchSize: null }
-    // },
-    // {
-    //   id: 'b',
-    //   type: 'linear',
-    //   position: { x: 400, y: 0 },
-    //   data: { numNeurons: null, inputSize: null, outputSize: null, bias: true }
-    // },
-    // {
-    //   id: 'c',
-    //   type: 'tanh',
-    //   position: { x: 800, y: 0 },
-    //   data: { inputSize: null, outputSize: null }
-    // }
   ],
   edges: [
   ],
@@ -105,13 +87,14 @@ const useStore = create<RFState>((set, get) => ({
   updateChildren: (parentId: string) => {
     const { nodes, edges, updateNodeData } = get();
     const parentNode = nodes.find((node) => node.id === parentId);
-    if (!parentNode || !parentNode.data.outputSize) return;
+    if (!parentNode || !parentNode.data.outputShape) return;
 
     const childrenEdges = edges.filter((edge) => edge.source === parentId);
     childrenEdges.forEach((edge) => {
       const childNode = nodes.find((node) => node.id === edge.target);
       if (childNode) {
-        updateNodeData(childNode.id, { inputSize: parentNode.data.outputSize });
+        console.log(`Updating child ${childNode.id} of parent ${parentId}`)
+        updateNodeData(childNode.id, { inputShape: parentNode.data.outputShape });
       }
     });
   },
@@ -135,7 +118,7 @@ const useStore = create<RFState>((set, get) => ({
 
     // Update children nodes
     childrenIds.forEach((childId) => {
-      updateNodeData(childId, { inputSize: null });
+      updateNodeData(childId, { inputShape: null });
     });
   },
 }));

@@ -89,12 +89,12 @@ const Sidebar: React.FC = () => {
   return (
     <div className="relative h-full text-gray-700">
       <div
-        className={`overflow-auto hide-scrollbar absolute top-0 left-0 h-full transition-width bg-white/30 backdrop-blur-md shadow-md ${isCollapsed ? 'w-0' : 'w-72'} z-20 border-r border-t border-gray-300 pt-4 rounded-r-3xl`}
+        className={`overflow-auto hide-scrollbar absolute top-0 left-0 h-full transition-width bg-white/30 backdrop-blur-md shadow-md ${isCollapsed ? 'w-0' : 'w-72'} z-20 border-r border-t border-gray-300 rounded-r-3xl`}
       >
         {!isCollapsed && (
           <>
             {/* search bar */}
-            <div className="flex items-center px-4 mb-4">
+            <div className="flex items-center px-4 my-6">
               <input
                 type="search"
                 className="flex-grow w-32 relative m-0 block rounded border border-solid border-neutral-200 bg-transparent bg-clip-padding px-3 py-1 text-base font-normal text-surface outline-none transition duration-200 ease-in-out placeholder:text-neutral-500 focus:z-[3] focus:border-primary focus:shadow-inset focus:outline-none motion-reduce:transition-none dark:border-white/10 dark:text-white dark:placeholder:text-neutral-200 dark:autofill:shadow-autofill dark:focus:border-primary"

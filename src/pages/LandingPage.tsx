@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
+import Hero from "../components/Hero";
 
 const LandingPage: React.FC = () => {
   return (
-    <div>
-      <h1>Welcome to Our App</h1>
-      <p>This is the landing page.</p>
+    <div className="bg-gray-100 bg-opacity-50">
+     <Hero></Hero>
     </div>
   );
 };

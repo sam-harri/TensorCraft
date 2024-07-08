@@ -1,8 +1,8 @@
-export type DropdownType = {
+export type DropdownInput = {
     isCollapsed: boolean;
 }
 
-const Dropdown : React.FC<DropdownType> = ({ isCollapsed }) => {
+const Dropdown : React.FC<DropdownInput> = ({ isCollapsed }) => {
     return (
         <>
             {isCollapsed ? (

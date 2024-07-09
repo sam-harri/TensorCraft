@@ -4,29 +4,27 @@ const Hero : React.FC = () => {
     return (
         <div className="relative container mx-auto pl-4 py-20 flex flex-col md:flex-row items-center justify-between h-screen pt-16">
         <div className="w-full md:w-5/12 md:ml-auto min-w-[300px] space-y-4 z-10">
-          <div className="animate__animated animate__fadeIn lg:ml-40 mt-24">
+          <div className="animate__animated animate__fadeIn lg:ml-40 mt-24" style={{animationDelay: '0.25s'}}>
             <div>
               <h1 className="text-6xl">
-                Unlock Insights with Spectral Dashboard Solution
+                Build Deep Learning Models with TensorCraft
               </h1>
             </div>
           </div>
           <div className="animate__animated animate__fadeIn pt-4 lg:ml-40" style={{animationDelay: '0.5s'}}>
             <div>
               <p className="text-lg text-gray-600">
-                Empower your creativity with Glossy, a cutting-edge coding tool
-                inspired by simplicity and efficiency. Unleash the full
-                potential of your projects.
+                Build neural networks using an inuitive node based Drag n' Drop UI, and compile it into your favorite framework.
               </p>
             </div>
           </div>
-          <div className="animate__animated animate__fadeIn pt-8 lg:ml-40" style={{animationDelay: '1s'}}>
+          <div className="animate__animated animate__fadeIn pt-8 lg:ml-40" style={{animationDelay: '0.75s'}}>
             <div className="flex space-x-4">
               <a
                 href="/contact/contact-v1"
                 className="bg-gray-100 text-black border border-black px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
               >
-                <div>Contact Us</div>
+                <div>What else?</div>
                 <img
                   src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bfaf9072a996e07cc844b_Arrow%20Black.svg"
                   loading="lazy"
@@ -39,7 +37,7 @@ const Hero : React.FC = () => {
                 target="_blank"
                 className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
               >
-                <div>Book a Demo</div>
+                <div>Craft a Model</div>
                 <img
                   src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bf78957ad86c050eb4989_Button%20Arrow.svg"
                   loading="lazy"

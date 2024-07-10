@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage';
 import SignIn from './pages/SignIn';
 import CreateAccount from './pages/CreateAccount';
 import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 import { Routes, Route } from "react-router-dom";
 import { createClient } from "@supabase/supabase-js";
 
@@ -25,6 +26,7 @@ const App: React.FC = () => {
       <Route path="/signin" element={<SignIn />} />
       <Route path="/createaccount" element={<CreateAccount />} />
       <Route path="/forgotpassword" element={<ForgotPassword />} />
+      <Route path="/resetpassword" element={<ResetPassword />} />
     </Routes>
   )
 }

@@ -6,7 +6,7 @@ import {
   Position,
   EdgeProps,
 } from 'reactflow';
-import useStore from '../state/store';
+import useGraphStore from '../state/graphStore';
 
 interface CustomEdgeProps extends EdgeProps<any> {
   id: string;
@@ -21,7 +21,7 @@ interface CustomEdgeProps extends EdgeProps<any> {
 const DeletableEdge: React.FC<CustomEdgeProps> = ({
   id, sourceX, sourceY, targetX, targetY, source, target, ...rest
 }) => {
-  const { setEdges, updateNodeData } = useStore();
+  const { setEdges, updateNodeData } = useGraphStore();
 
   const [path, labelX, labelY] = getSimpleBezierPath({
     sourceX,

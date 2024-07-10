@@ -3,7 +3,7 @@ import { NodeProps, Handle, Position } from 'reactflow';
 import { useSelect } from 'downshift';
 import Dropdown from '../../components/Dropdown';
 import Hint from '../../components/Hint';
-import useStore from '../../state/store';
+import useGraphStore from '../../state/graphStore';
 import DeleteNode from '../../components/DeleteNode';
 
 export type ImageInputLayerNodeData = {
@@ -15,7 +15,7 @@ export type ImageInputLayerNodeData = {
 };
 
 const ImageInputNode: React.FC<NodeProps<ImageInputLayerNodeData>> = (props) => {
-  const { updateNodeData } = useStore();
+  const { updateNodeData } = useGraphStore();
   const [numChannels, setNumChannels] = useState<number | null>(props.data.numChannels ?? null);
   const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
   const [height, setHeight] = useState<number | null>(props.data.height ?? null);

@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
 import Dropdown from '../../components/Dropdown';
-import useStore from '../../state/store';
+import useGraphStore from '../../state/graphStore';
 import Hint from '../../components/Hint';
 import DeleteNode from '../../components/DeleteNode';
 
@@ -12,7 +12,7 @@ export type TanhLayerNodeData = {
 };
 
 const TanhNode: React.FC<NodeProps<TanhLayerNodeData>> = (props) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
+  const updateNodeData = useGraphStore((state) => state.updateNodeData);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   useEffect(() => {

@@ -1,11 +1,11 @@
-import useStore from "../state/store";
+import useGraphStore from "../state/graphStore";
 
 type DeleteNodeProps = {
   nodeId: string;
 };
 
 const DeleteNode: React.FC<DeleteNodeProps> = ({ nodeId }) => {
-  const deleteNode = useStore((state) => state.deleteNode);
+  const deleteNode = useGraphStore((state) => state.deleteNode);
 
   const handleDelete = () => {
     deleteNode(nodeId);

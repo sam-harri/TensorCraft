@@ -29,7 +29,7 @@ type RFState = {
   deleteNode: (nodeId: string) => void;
 };
 
-const useStore = create<RFState>((set, get) => ({
+const useGraphStore = create<RFState>((set, get) => ({
   nodes: [
   ],
   edges: [
@@ -123,4 +123,4 @@ const useStore = create<RFState>((set, get) => ({
   },
 }));
 
-export default useStore;
+export default useGraphStore;

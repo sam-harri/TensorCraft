@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
 import Dropdown from '../../components/Dropdown';
 import Hint from '../../components/Hint';
-import useStore from '../../state/store';
+import useGraphStore from '../../state/graphStore';
 import DeleteNode from '../../components/DeleteNode';
 
 export type TimeseriesInputLayerNodeData = {
@@ -13,7 +13,7 @@ export type TimeseriesInputLayerNodeData = {
 };
 
 const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (props) => {
-  const { updateNodeData } = useStore();
+  const { updateNodeData } = useGraphStore();
   const [numFeatures, setNumFeatures] = useState<number | null>(props.data.numFeatures ?? null);
   const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
   const [sequenceLength, setSequenceLength] = useState<number | null>(props.data.sequenceLength ?? null);

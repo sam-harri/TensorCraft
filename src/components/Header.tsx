@@ -18,7 +18,9 @@ const Header = () => {
     <>
       <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-7/12 mt-4 px-4 py-3 bg-white/30 backdrop-blur-md rounded-lg shadow-md flex items-center justify-between z-50">
         <div className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img src="tensorcraft2.png" alt="TensorCraft Logo" className="h-10 mb-0" />
+              </Link>
         </div>
         <nav className="hidden lg:flex space-x-6 absolute left-1/2 transform -translate-x-1/2">
           <Link to="/" className="text-gray-700 hover:text-black">Home</Link>
@@ -43,7 +45,7 @@ const Header = () => {
           </div>
         </nav>
         <div className="hidden lg:flex items-center space-x-4">
-          <button className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Sign In</button>
+        <Link to="/signin" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-center">Sign In</Link>
         </div>
         <div className="lg:hidden flex items-center">
           <button onClick={toggleMenu} className="text-gray-700 hover:text-black">
@@ -81,7 +83,7 @@ const Header = () => {
                   </div>
                 )}
               </div>
-              <button className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100">Sign In</button>
+              <Link to="/signin" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-center">Sign In</Link>
             </nav>
           </div>
         )}

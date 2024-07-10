@@ -3,7 +3,7 @@ import { NodeProps, Handle, Position } from 'reactflow';
 import Dropdown from '../../components/Dropdown';
 import Hint from '../../components/Hint';
 import Checkbox from '../../components/Checkbox';
-import useStore from '../../state/store';
+import useGraphStore from '../../state/graphStore';
 import DeleteNode from '../../components/DeleteNode';
 
 export type FullyConnectedNodeData = {
@@ -14,7 +14,7 @@ export type FullyConnectedNodeData = {
 };
 
 const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (props) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
+  const updateNodeData = useGraphStore((state) => state.updateNodeData);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const { bias } = props.data;

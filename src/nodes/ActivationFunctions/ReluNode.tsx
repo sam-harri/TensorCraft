@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
 import Dropdown from '../../components/Dropdown';
-import useStore from '../../state/store';
+import useGraphStore from '../../state/graphStore';
 import Hint from '../../components/Hint';
 import Checkbox from '../../components/Checkbox';
 import DeleteNode from '../../components/DeleteNode';
@@ -13,8 +13,8 @@ export type ReLULayerNodeData = {
 };
 
 const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
-  const updateNodeData = useStore((state) => state.updateNodeData);
-  const nodes = useStore((state) => state.nodes);
+  const updateNodeData = useGraphStore((state) => state.updateNodeData);
+  const nodes = useGraphStore((state) => state.nodes);
   console.table(nodes);
   const [isCollapsed, setIsCollapsed] = useState(true);
 

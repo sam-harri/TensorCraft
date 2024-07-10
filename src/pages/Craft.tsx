@@ -12,7 +12,7 @@ import {v4 as uuidv4} from 'uuid';
 import { ReactFlowProvider } from 'reactflow';
 
 import Sidebar from '../components/Sidebar';
-import useStore from '../state/store';
+import useGraphStore from '../state/graphStore';
 import { edgeTypes } from '../edges';
 import { initialData, NodeType, nodeTypes } from '../nodes';
 
@@ -27,7 +27,7 @@ const selector = (state: any) => ({
 });
 
 const CraftComponent: React.FC = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onReconnect, addNode } = useStore(useShallow(selector));
+  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onReconnect, addNode } = useGraphStore(useShallow(selector));
   const { screenToFlowPosition } = useReactFlow();
 
   const onDragOver = useCallback((event : any) => {

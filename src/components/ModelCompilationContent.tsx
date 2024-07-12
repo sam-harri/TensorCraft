@@ -1,6 +1,127 @@
 import FrameworkDropdown from "./FrameworkDropdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
-import { atomOneDark } from "react-syntax-highlighter/dist/esm/styles/hljs";
+
+// @ts-ignore
+const atomOneDark = {
+    "hljs": {
+        "display": "block",
+        "overflowX": "auto",
+        "padding": "0.5em",
+        "color": "#abb2bf",
+        "background": "#282c34",
+        "height": "100%",
+        "-ms-overflow-style": "none",
+        "scrollbar-width": "none"
+    },
+    "hljs::-webkit-scrollbar" : {
+       " display": "none"
+    },
+    "hljs-comment": {
+        "color": "#5c6370",
+        "fontStyle": "italic"
+    },
+    "hljs-quote": {
+        "color": "#5c6370",
+        "fontStyle": "italic"
+    },
+    "hljs-doctag": {
+        "color": "#c678dd"
+    },
+    "hljs-keyword": {
+        "color": "#c678dd"
+    },
+    "hljs-formula": {
+        "color": "#c678dd"
+    },
+    "hljs-section": {
+        "color": "#e06c75"
+    },
+    "hljs-name": {
+        "color": "#e06c75"
+    },
+    "hljs-selector-tag": {
+        "color": "#e06c75"
+    },
+    "hljs-deletion": {
+        "color": "#e06c75"
+    },
+    "hljs-subst": {
+        "color": "#e06c75"
+    },
+    "hljs-literal": {
+        "color": "#56b6c2"
+    },
+    "hljs-string": {
+        "color": "#98c379"
+    },
+    "hljs-regexp": {
+        "color": "#98c379"
+    },
+    "hljs-addition": {
+        "color": "#98c379"
+    },
+    "hljs-attribute": {
+        "color": "#98c379"
+    },
+    "hljs-meta-string": {
+        "color": "#98c379"
+    },
+    "hljs-built_in": {
+        "color": "#e6c07b"
+    },
+    "hljs-class .hljs-title": {
+        "color": "#e6c07b"
+    },
+    "hljs-attr": {
+        "color": "#d19a66"
+    },
+    "hljs-variable": {
+        "color": "#d19a66"
+    },
+    "hljs-template-variable": {
+        "color": "#d19a66"
+    },
+    "hljs-type": {
+        "color": "#d19a66"
+    },
+    "hljs-selector-class": {
+        "color": "#d19a66"
+    },
+    "hljs-selector-attr": {
+        "color": "#d19a66"
+    },
+    "hljs-selector-pseudo": {
+        "color": "#d19a66"
+    },
+    "hljs-number": {
+        "color": "#d19a66"
+    },
+    "hljs-symbol": {
+        "color": "#61aeee"
+    },
+    "hljs-bullet": {
+        "color": "#61aeee"
+    },
+    "hljs-link": {
+        "color": "#61aeee",
+        "textDecoration": "underline"
+    },
+    "hljs-meta": {
+        "color": "#61aeee"
+    },
+    "hljs-selector-id": {
+        "color": "#61aeee"
+    },
+    "hljs-title": {
+        "color": "#61aeee"
+    },
+    "hljs-emphasis": {
+        "fontStyle": "italic"
+    },
+    "hljs-strong": {
+        "fontWeight": "bold"
+    }
+} 
 
 const ModelCompilationContent: React.FC = () => {
   const codeString = `import math
@@ -148,18 +269,24 @@ class TransformerModel(nn.Transformer):
   `;
 
   return (
-    <div className="mx-9 mt-4 max-w-full">
-      <FrameworkDropdown />
-      <div>
+    <div className="flex flex-col h-full mx-6">
+      <div className="flex-none">
+        <FrameworkDropdown />
+      </div>
+      <div className="flex-none">
         <div className="w-full bg-slate-900 border-t border-x-3 rounded-t-lg h-6 opacity-85"></div>
       </div>
-      <div className="max-h-[calc(80vh)] overflow-auto hide-scrollbar">
-      <SyntaxHighlighter language="javascript" style={atomOneDark} showLineNumbers={true} wrapLongLines={true}>
+      <div className="flex-1 overflow-auto hide-scrollbar">
+        <SyntaxHighlighter language="python"
+        // @ts-ignore super weird issue with the react-highlighter package, it's not recognizing the style prop type as valid
+        style={atomOneDark}
+        showLineNumbers={true}
+        wrapLongLines={true}>
         {codeString}
-      </SyntaxHighlighter>
+        </SyntaxHighlighter>
       </div>
-      <div>
-        <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85"></div>
+      <div className="flex-none">
+        <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85 mb-6"></div>
       </div>
     </div>
   );

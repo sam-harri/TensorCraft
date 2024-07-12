@@ -1,20 +1,21 @@
-import React, { useCallback } from 'react';
-import { useShallow } from 'zustand/react/shallow';
+import React, { useCallback } from "react";
+import { useShallow } from "zustand/react/shallow";
 import {
   Background,
   Controls,
   MiniMap,
   ReactFlow,
   useReactFlow,
-} from 'reactflow';
-import 'reactflow/dist/style.css';
-import {v4 as uuidv4} from 'uuid';
-import { ReactFlowProvider } from 'reactflow';
+} from "reactflow";
+import "reactflow/dist/style.css";
+import { v4 as uuidv4 } from "uuid";
+import { ReactFlowProvider } from "reactflow";
 
-import Sidebar from '../components/Sidebar';
-import useGraphStore from '../state/graphStore';
-import { edgeTypes } from '../edges';
-import { initialData, NodeType, nodeTypes } from '../nodes';
+import ToolBox from "../components/ToolBox";
+import useGraphStore from "../state/graphStore";
+import { edgeTypes } from "../edges";
+import { initialData, NodeType, nodeTypes } from "../nodes";
+import ModelCompilation from "../components/ModelCompilation";
 
 const selector = (state: any) => ({
   nodes: state.nodes,
@@ -27,22 +28,32 @@ const selector = (state: any) => ({
 });
 
 const CraftComponent: React.FC = () => {
-  const { nodes, edges, onNodesChange, onEdgesChange, onConnect, onReconnect, addNode } = useGraphStore(useShallow(selector));
+  const {
+    nodes,
+    edges,
+    onNodesChange,
+    onEdgesChange,
+    onConnect,
+    onReconnect,
+    addNode,
+  } = useGraphStore(useShallow(selector));
   const { screenToFlowPosition } = useReactFlow();
 
-  const onDragOver = useCallback((event : any) => {
+  const onDragOver = useCallback((event: any) => {
     event.preventDefault();
-    event.dataTransfer.dropEffect = 'move';
+    event.dataTransfer.dropEffect = "move";
   }, []);
 
   const onDrop = useCallback(
-    (event : any) => {
+    (event: any) => {
       event.preventDefault();
 
-      const type = event.dataTransfer.getData('application/reactflow') as NodeType;
+      const type = event.dataTransfer.getData(
+        "application/reactflow"
+      ) as NodeType;
 
       // check if the dropped element is valid
-      if (typeof type === 'undefined' || !type) {
+      if (typeof type === "undefined" || !type) {
         return;
       }
 
@@ -64,32 +75,33 @@ const CraftComponent: React.FC = () => {
       };
       addNode(newNode);
     },
-    [screenToFlowPosition, addNode],
+    [screenToFlowPosition, addNode]
   );
 
   return (
-    <div className="relative h-screen"> {/* Add padding top to create overlap effect */}
-  <Sidebar />
-  <div className="absolute top-0 left-0 w-full h-full">
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      edgeTypes={edgeTypes}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      onReconnect={onReconnect}
-      onDrop={onDrop}
-      onDragOver={onDragOver}
-      fitView
-    >
-      <Background />
-      <MiniMap />
-      <Controls />
-    </ReactFlow>
+    <div className="flex h-screen">
+    <ToolBox />
+    <div className="flex-1 relative">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        edgeTypes={edgeTypes}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        onReconnect={onReconnect}
+        onDrop={onDrop}
+        onDragOver={onDragOver}
+        fitView
+      >
+        <Background />
+        <MiniMap />
+        <Controls />
+      </ReactFlow>
+    </div>
+    <ModelCompilation />
   </div>
-</div>
   );
 };
 
@@ -98,9 +110,7 @@ const Craft: React.FC = () => {
     <ReactFlowProvider>
       <CraftComponent />
     </ReactFlowProvider>
-  )
-}
-
-
+  );
+};
 
 export default Craft;

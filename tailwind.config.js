@@ -7,7 +7,8 @@ module.exports = {
   theme: {
     extend: {
       translate: {
-        '72-minus-1px': 'calc(18rem - 1px)', // 16rem is the equivalent of translate-x-64
+        '72-minus-1px': 'calc(18rem - 1px)',
+        '-72-minus+1px': 'calc(-75vw + 1px)',
       },
       keyframes: {
         'fade-in': {

@@ -9,6 +9,7 @@ module.exports = {
       translate: {
         '72-minus-1px': 'calc(18rem - 1px)',
         '-72-minus+1px': 'calc(-75vw + 1px)',
+        '75vw+1px': 'calc(75vw + 1px)',
       },
       keyframes: {
         'fade-in': {

@@ -1,130 +1,130 @@
+import { toast, ToastContainer } from "react-toastify";
 import FrameworkDropdown from "./FrameworkDropdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
 
 // @ts-ignore
 const atomOneDark = {
-    "hljs": {
-        "display": "block",
-        "overflowX": "auto",
-        "padding": "0.5em",
-        "color": "#abb2bf",
-        "background": "#282c34",
-        "height": "100%",
-        "-ms-overflow-style": "none",
-        "scrollbar-width": "none"
-    },
-    "hljs::-webkit-scrollbar" : {
-       " display": "none"
-    },
-    "hljs-comment": {
-        "color": "#5c6370",
-        "fontStyle": "italic"
-    },
-    "hljs-quote": {
-        "color": "#5c6370",
-        "fontStyle": "italic"
-    },
-    "hljs-doctag": {
-        "color": "#c678dd"
-    },
-    "hljs-keyword": {
-        "color": "#c678dd"
-    },
-    "hljs-formula": {
-        "color": "#c678dd"
-    },
-    "hljs-section": {
-        "color": "#e06c75"
-    },
-    "hljs-name": {
-        "color": "#e06c75"
-    },
-    "hljs-selector-tag": {
-        "color": "#e06c75"
-    },
-    "hljs-deletion": {
-        "color": "#e06c75"
-    },
-    "hljs-subst": {
-        "color": "#e06c75"
-    },
-    "hljs-literal": {
-        "color": "#56b6c2"
-    },
-    "hljs-string": {
-        "color": "#98c379"
-    },
-    "hljs-regexp": {
-        "color": "#98c379"
-    },
-    "hljs-addition": {
-        "color": "#98c379"
-    },
-    "hljs-attribute": {
-        "color": "#98c379"
-    },
-    "hljs-meta-string": {
-        "color": "#98c379"
-    },
-    "hljs-built_in": {
-        "color": "#e6c07b"
-    },
-    "hljs-class .hljs-title": {
-        "color": "#e6c07b"
-    },
-    "hljs-attr": {
-        "color": "#d19a66"
-    },
-    "hljs-variable": {
-        "color": "#d19a66"
-    },
-    "hljs-template-variable": {
-        "color": "#d19a66"
-    },
-    "hljs-type": {
-        "color": "#d19a66"
-    },
-    "hljs-selector-class": {
-        "color": "#d19a66"
-    },
-    "hljs-selector-attr": {
-        "color": "#d19a66"
-    },
-    "hljs-selector-pseudo": {
-        "color": "#d19a66"
-    },
-    "hljs-number": {
-        "color": "#d19a66"
-    },
-    "hljs-symbol": {
-        "color": "#61aeee"
-    },
-    "hljs-bullet": {
-        "color": "#61aeee"
-    },
-    "hljs-link": {
-        "color": "#61aeee",
-        "textDecoration": "underline"
-    },
-    "hljs-meta": {
-        "color": "#61aeee"
-    },
-    "hljs-selector-id": {
-        "color": "#61aeee"
-    },
-    "hljs-title": {
-        "color": "#61aeee"
-    },
-    "hljs-emphasis": {
-        "fontStyle": "italic"
-    },
-    "hljs-strong": {
-        "fontWeight": "bold"
-    }
-} 
+  hljs: {
+    display: "block",
+    overflowX: "auto",
+    padding: "0.5em",
+    color: "#abb2bf",
+    background: "#282c34",
+    height: "100%",
+    "-ms-overflow-style": "none",
+    "scrollbar-width": "none",
+  },
+  "hljs::-webkit-scrollbar": {
+    " display": "none",
+  },
+  "hljs-comment": {
+    color: "#5c6370",
+    fontStyle: "italic",
+  },
+  "hljs-quote": {
+    color: "#5c6370",
+    fontStyle: "italic",
+  },
+  "hljs-doctag": {
+    color: "#c678dd",
+  },
+  "hljs-keyword": {
+    color: "#c678dd",
+  },
+  "hljs-formula": {
+    color: "#c678dd",
+  },
+  "hljs-section": {
+    color: "#e06c75",
+  },
+  "hljs-name": {
+    color: "#e06c75",
+  },
+  "hljs-selector-tag": {
+    color: "#e06c75",
+  },
+  "hljs-deletion": {
+    color: "#e06c75",
+  },
+  "hljs-subst": {
+    color: "#e06c75",
+  },
+  "hljs-literal": {
+    color: "#56b6c2",
+  },
+  "hljs-string": {
+    color: "#98c379",
+  },
+  "hljs-regexp": {
+    color: "#98c379",
+  },
+  "hljs-addition": {
+    color: "#98c379",
+  },
+  "hljs-attribute": {
+    color: "#98c379",
+  },
+  "hljs-meta-string": {
+    color: "#98c379",
+  },
+  "hljs-built_in": {
+    color: "#e6c07b",
+  },
+  "hljs-class .hljs-title": {
+    color: "#e6c07b",
+  },
+  "hljs-attr": {
+    color: "#d19a66",
+  },
+  "hljs-variable": {
+    color: "#d19a66",
+  },
+  "hljs-template-variable": {
+    color: "#d19a66",
+  },
+  "hljs-type": {
+    color: "#d19a66",
+  },
+  "hljs-selector-class": {
+    color: "#d19a66",
+  },
+  "hljs-selector-attr": {
+    color: "#d19a66",
+  },
+  "hljs-selector-pseudo": {
+    color: "#d19a66",
+  },
+  "hljs-number": {
+    color: "#d19a66",
+  },
+  "hljs-symbol": {
+    color: "#61aeee",
+  },
+  "hljs-bullet": {
+    color: "#61aeee",
+  },
+  "hljs-link": {
+    color: "#61aeee",
+    textDecoration: "underline",
+  },
+  "hljs-meta": {
+    color: "#61aeee",
+  },
+  "hljs-selector-id": {
+    color: "#61aeee",
+  },
+  "hljs-title": {
+    color: "#61aeee",
+  },
+  "hljs-emphasis": {
+    fontStyle: "italic",
+  },
+  "hljs-strong": {
+    fontWeight: "bold",
+  },
+};
 
-const ModelCompilationContent: React.FC = () => {
-  const codeString = `import math
+const codeString = `import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -187,7 +187,7 @@ class RNNModel(nn.Module):
 
 # Temporarily leave PositionalEncoding module here. Will be moved somewhere else.
 class PositionalEncoding(nn.Module):
-    r"""Inject some information about the relative or absolute position of the tokens in the sequence.
+    """Inject some information about the relative or absolute position of the tokens in the sequence.
         The positional encodings have the same dimension as the embeddings, so that the two can be summed.
         Here, we use sine and cosine functions of different frequencies.
     .. math:
@@ -268,28 +268,59 @@ class TransformerModel(nn.Transformer):
         return F.log_softmax(output, dim=-1)
   `;
 
-  return (
-    <div className="flex flex-col h-full mx-6">
-      <div className="flex-none">
-        <FrameworkDropdown />
-      </div>
-      <div className="flex-none">
-        <div className="w-full bg-slate-900 border-t border-x-3 rounded-t-lg h-6 opacity-85"></div>
-      </div>
-      <div className="flex-1 overflow-auto hide-scrollbar">
-        <SyntaxHighlighter language="python"
-        // @ts-ignore super weird issue with the react-highlighter package, it's not recognizing the style prop type as valid
-        style={atomOneDark}
-        showLineNumbers={true}
-        wrapLongLines={true}>
-        {codeString}
-        </SyntaxHighlighter>
-      </div>
-      <div className="flex-none">
-        <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85 mb-6"></div>
-      </div>
-    </div>
-  );
-};
 
-export default ModelCompilationContent;
+  const ModelCompilationContent: React.FC = () => {
+    const copyToClipboard = () => {
+      navigator.clipboard.writeText(codeString)
+        .then(() => {
+          toast.success("Code copied to clipboard!", { autoClose: 2000, position: "top-right" });
+        })
+        .catch((_) => {
+          toast.error("Failed to copy code to clipboard!", { autoClose: 2000, position: "top-right" });
+        });
+    };
+  
+    return (
+      <div className="flex flex-col h-full mx-6">
+        <div className="flex-none mt-6 flex flex-row items-center space-x-4 mb-4">
+          <FrameworkDropdown />
+          <button
+            type="submit"
+            className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
+          >
+            Complete Model
+          </button>
+          <button
+            type="submit"
+            className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
+          >
+            Visualize Model
+          </button>
+          <ToastContainer/>
+        </div>
+  
+        <div className="flex-none">
+          <div className="w-full bg-slate-900 border-t border-x-3 rounded-t-lg h-6 opacity-85 flex flex-row items-center justify-end pr-2">
+            <p className="text-gray-200 text-xs cursor-pointer" onClick={copyToClipboard}>Copy Code</p>
+            <img src="copy.svg" width={18} className="cursor-pointer" onClick={copyToClipboard} />
+          </div>
+        </div>
+        <div className="flex-1 overflow-auto hide-scrollbar">
+          <SyntaxHighlighter
+            language="python"
+            // @ts-ignore super weird issue with the react-highlighter package, it's not recognizing the style prop type as valid
+            style={atomOneDark}
+            showLineNumbers={true}
+            wrapLongLines={true}
+          >
+            {codeString}
+          </SyntaxHighlighter>
+        </div>
+        <div className="flex-none">
+          <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85 mb-6"></div>
+        </div>
+      </div>
+    );
+  };
+  
+  export default ModelCompilationContent;

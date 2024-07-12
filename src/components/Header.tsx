@@ -21,7 +21,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-1/3 mt-4 px-4 py-3 bg-white/30 backdrop-blur-md rounded-lg shadow-md flex items-center justify-between z-50">
+      <header className="fixed top-0 left-1/2 transform -translate-x-1/2 w-1/3 min-w-96 mt-4 px-4 py-3 bg-white/30 backdrop-blur-md rounded-lg shadow-md flex items-center justify-between z-50">
         <div className="flex items-center">
           <Link to="/" className="flex items-center">
             <img src="tensorcraft2.png" alt="TensorCraft Logo" className="h-10 mb-0" />

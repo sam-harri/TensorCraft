@@ -36,10 +36,10 @@ const FrameworkDropdown : React.FC = () => {
     });
 
     return (
-        <div className="mb-4 relative max-w-60 ">
+        <div className="relative w-60">
         <div
           {...getToggleButtonProps()}
-          className="mt-1 w-full rounded border-gray-300 shadow-sm sm:text-sm cursor-pointer bg-white p-2 flex items-center justify-between"
+          className="mt-1 w-full rounded border border-gray-200 shadow-sm sm:text-sm cursor-pointer bg-white p-2 flex items-center justify-between"
         >
           {selectedItem ? (
             <div className="flex items-center">

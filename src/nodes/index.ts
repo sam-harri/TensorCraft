@@ -33,8 +33,6 @@ export const nodeTypes = {
   "conv1d": Conv1DLayerNode,
 } satisfies NodeTypes;
 
-//TODO timeseries-input
-
 export const initialData = {
   "tanh": {
     inputSize: null,
@@ -62,7 +60,7 @@ export const initialData = {
   },
   "timeseries-input": {
     numFeatures: null,
-    batchSize: null,
+    batchSize: 32,
     sequenceLength: null
   },
   "image-input": {
@@ -73,10 +71,10 @@ export const initialData = {
   },
   "conv1d": { 
     numFilters: null,
-    kernelSize: null,
-    stride: null,
-    padding: null,
-    dilation: null,
+    kernelSize: 1,
+    stride: 1,
+    padding: 0,
+    dilation: 1,
     inputShape: null,
     outputShape: null,
   }

@@ -79,7 +79,7 @@ const CraftComponent: React.FC = () => {
   );
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen overflow-hidden">
     <ToolBox />
     <div className="flex-1 relative">
       <ReactFlow

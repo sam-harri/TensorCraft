@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { NodeProps, Handle, Position } from 'reactflow';
-import Dropdown from '../../components/Dropdown';
-import Hint from '../../components/Hint';
+import InputField from '../../components/InputField';
 import useGraphStore from '../../state/graphStore';
-import DeleteNode from '../../components/DeleteNode';
+import ShapeLabel from '../../components/ShapeLabel';
+import NodeHeader from '../../components/NodeHeader';
 
 export type TimeseriesInputLayerNodeData = {
   numFeatures: number | null;
@@ -11,6 +11,8 @@ export type TimeseriesInputLayerNodeData = {
   sequenceLength: number | null;
   outputShape: string;
 };
+
+const validatePositiveNumber = (value: number) => value > 0;
 
 const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (props) => {
   const { updateNodeData } = useGraphStore();
@@ -28,125 +30,56 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
 
   useEffect(() => {
     const output = `(${batchSize ?? 'N'}, ${numFeatures ?? 'C'}, ${sequenceLength ?? 'L'})`;
-    setOutputShape(output); // Update output size to PyTorch format [N, C, L]
+    setOutputShape(output);
     updateNodeData(props.id, { outputShape: output });
   }, [numFeatures, batchSize, sequenceLength, updateNodeData, props.id]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const value = numFeaturesInput ? Number(numFeaturesInput) : null;
-      if (value !== null && value < 1) {
-        setNumFeaturesError('Number of features must be a positive number.');
-      } else {
-        setNumFeaturesError(null);
-        props.data.numFeatures = value;
-        setNumFeatures(value);
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [numFeaturesInput]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const value = batchSizeInput ? Number(batchSizeInput) : null;
-      if (value !== null && value < 1) {
-        setBatchSizeError('Batch size must be a positive number.');
-      } else {
-        setBatchSizeError(null);
-        props.data.batchSize = value;
-        setBatchSize(value);
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [batchSizeInput]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      const value = sequenceLengthInput ? Number(sequenceLengthInput) : null;
-      if (value !== null && value < 1) {
-        setSequenceLengthError('Sequence length must be a positive number.');
-      } else {
-        setSequenceLengthError(null);
-        props.data.sequenceLength = value;
-        setSequenceLength(value);
-      }
-    }, 200);
-
-    return () => clearTimeout(timer);
-  }, [sequenceLengthInput]);
-
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
-      <div
-        className="flex items-center p-1 cursor-pointer"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        <img
-          src="input/timeseries.png"
-          alt="Timeseries Input"
-          className="rounded-full h-10 w-10 mr-4"
-        />
-        <div className="flex-grow font-semibold text-gray-800 text-left">Timeseries Input</div>
-        <DeleteNode nodeId={props.id} />
-        <div className="text-gray-500 ml-2">
-          <Dropdown isCollapsed={isCollapsed} />
-        </div>
-      </div>
+      <Handle type="target" position={Position.Left} isConnectable={true} />
+      <NodeHeader title="Timeseries Input" isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} imageSource="input/timeseries.png" imageAlt="Timeseries Input" props={props} />
       {!isCollapsed && (
         <div className="p-4 border-t border-gray-200">
-          <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Number of Features:</label>
-            <div className="flex items-center">
-              <input
-                type="number"
-                className="mt-1 block w-full rounded shadow-sm sm:text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-gray-300"
-                value={numFeaturesInput}
-                onChange={(e) => setNumFeaturesInput(e.target.value)}
-                style={{ padding: '10px', height: '40px' }}
-              />
-              <Hint message="The number of features (columns) in the input data." />
-            </div>
-            {numFeaturesError && <p className="text-red-500 text-xs mt-1">{numFeaturesError}</p>}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Batch Size:</label>
-            <div className="flex items-center">
-              <input
-                type="number"
-                className="mt-1 block w-full rounded shadow-sm sm:text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-gray-300"
-                value={batchSizeInput}
-                onChange={(e) => setBatchSizeInput(e.target.value)}
-                style={{ padding: '10px', height: '40px' }}
-              />
-              <Hint message="The number of samples processed together during training or evaluation." />
-            </div>
-            {batchSizeError && <p className="text-red-500 text-xs mt-1">{batchSizeError}</p>}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Sequence Length:</label>
-            <div className="flex items-center">
-              <input
-                type="number"
-                className="mt-1 block w-full rounded shadow-sm sm:text-sm [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none border-gray-300"
-                value={sequenceLengthInput}
-                onChange={(e) => setSequenceLengthInput(e.target.value)}
-                style={{ padding: '10px', height: '40px' }}
-              />
-              <Hint message="The length of the sequence in the input data." />
-            </div>
-            {sequenceLengthError && <p className="text-red-500 text-xs mt-1">{sequenceLengthError}</p>}
-          </div>
-          <div className="mb-4">
-            <label className="block text-gray-600 text-sm">Output Size:</label>
-            <div className="flex items-center">
-              <div className="mt-1 block w-full rounded border-gray-300 shadow-sm sm:text-sm bg-gray-100 p-2">
-                {outputShape}
-              </div>
-              <Hint message="The shape of the tensor is (BatchSize x NumFeatures x SequenceLength)." />
-            </div>
-          </div>
+          <InputField
+            label="Number of Features"
+            valueInput={numFeaturesInput}
+            setValueInput={setNumFeaturesInput}
+            valueError={numFeaturesError}
+            setValueError={setNumFeaturesError}
+            setValue={setNumFeatures}
+            errorMessage="Number of features must be a positive number."
+            hintMessage="The number of features (columns) in the input data."
+            validationFunction={validatePositiveNumber}
+            props={props}
+            dataKey="numFeatures"
+          />
+          <InputField
+            label="Batch Size"
+            valueInput={batchSizeInput}
+            setValueInput={setBatchSizeInput}
+            valueError={batchSizeError}
+            setValueError={setBatchSizeError}
+            setValue={setBatchSize}
+            errorMessage="Batch size must be a positive number."
+            hintMessage="The number of samples processed together during training or evaluation."
+            validationFunction={validatePositiveNumber}
+            props={props}
+            dataKey="batchSize"
+          />
+          <InputField
+            label="Sequence Length"
+            valueInput={sequenceLengthInput}
+            setValueInput={setSequenceLengthInput}
+            valueError={sequenceLengthError}
+            setValueError={setSequenceLengthError}
+            setValue={setSequenceLength}
+            errorMessage="Sequence length must be a positive number."
+            hintMessage="The length of the sequence in the input data."
+            validationFunction={validatePositiveNumber}
+            props={props}
+            dataKey="sequenceLength"
+          />
+          <ShapeLabel input={false} shape={outputShape} shapeHintMessage="The shape of the tensor is (BatchSize x NumFeatures x SequenceLength)." />
         </div>
       )}
       <Handle type="source" position={Position.Right} isConnectable={true} />

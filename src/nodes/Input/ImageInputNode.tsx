@@ -11,7 +11,7 @@ export type ImageInputLayerNodeData = {
   batchSize: number | null;
   height: number | null;
   width: number | null;
-  outputSize: string;
+  outputShape: string;
 };
 
 const validatePositiveNumber = (value: number) => value > 0;
@@ -19,7 +19,7 @@ const validatePositiveNumber = (value: number) => value > 0;
 const ImageInputNode: React.FC<NodeProps<ImageInputLayerNodeData>> = (props) => {
   const { updateNodeData } = useGraphStore();
   const [numChannels, setNumChannels] = useState<number | null>(props.data.numChannels ?? null);
-  const [outputSize, setOutputSize] = useState<string>("");
+  const [outputShape, setOutputShape] = useState<string>("");
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const [batchSize, setBatchSize] = useState<number | null>(props.data.batchSize ?? null);
@@ -36,8 +36,8 @@ const ImageInputNode: React.FC<NodeProps<ImageInputLayerNodeData>> = (props) => 
 
   useEffect(() => {
     const output = `(${batchSize ?? 'N'}, ${numChannels ?? 'C'}, ${height ?? 'H'}, ${width ?? 'W'})`;
-    setOutputSize(output);
-    updateNodeData(props.id, { outputSize: output });
+    setOutputShape(output);
+    updateNodeData(props.id, { outputShape: output });
   }, [numChannels, batchSize, height, width, updateNodeData, props.id]);
 
   return (
@@ -86,7 +86,7 @@ const ImageInputNode: React.FC<NodeProps<ImageInputLayerNodeData>> = (props) => 
             props={props}
             dataKey="width"
           />
-          <ShapeLabel input={false} shape={outputSize} shapeHintMessage="The shape of the tensor is (BatchSize x NumChannels x Height x Width)." />
+          <ShapeLabel input={false} shape={outputShape} shapeHintMessage="The shape of the tensor is (BatchSize x NumChannels x Height x Width)." />
         </div>
       )}
       <Handle type="source" position={Position.Right} isConnectable={true} />

@@ -13,6 +13,7 @@ import BatchNorm1dLayerNode from "./Normalization/BatchNorm1DLayerNode";
 import TabularInputNode from "./Input/TabularInputNode";
 import TimeseriesInputNode from "./Input/TimeseriesInputNode";
 import ImageInputNode from "./Input/ImageInputNode";
+import Conv2DLayerNode from "./Convolutions/Conv2DLayerNode";
 
 
 export const nodeTypes = {
@@ -31,21 +32,22 @@ export const nodeTypes = {
   "timeseries-input": TimeseriesInputNode,
   "image-input": ImageInputNode,
   "conv1d": Conv1DLayerNode,
+  "conv2d": Conv2DLayerNode,
 } satisfies NodeTypes;
 
 export const initialData = {
   "tanh": {
-    inputSize: null,
-    outputSize: null
+    inputShape: null,
+    outputShape: null
   },
   "relu": {
-    inputSize: null,
-    outputSize: null,
+    inputShape: null,
+    outputShape: null,
     inpalce: false
   },
   "sigmoid": {
-    inputSize: null,
-    outputSize: null
+    inputShape: null,
+    outputShape: null
   },
   "linear": {
     numNeurons: null,
@@ -67,17 +69,28 @@ export const initialData = {
     numChannels: null,
     batchSize: null,
     height: null,
-    width: null
+    width: null,
+    outputShape: null
   },
   "conv1d": { 
     numFilters: null,
-    kernelSize: 1,
+    kernelSize: null,
+    stride: 1,
+    padding: 0,
+    dilation: 1,
+    inputShape: null,
+    outputShape: null,
+  },
+"conv2d": {
+    numFilters: null,
+    kernelSize: null,
     stride: 1,
     padding: 0,
     dilation: 1,
     inputShape: null,
     outputShape: null,
   }
+  
 }
 
 export type NodeType = keyof typeof initialData;

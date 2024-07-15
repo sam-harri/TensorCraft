@@ -48,7 +48,7 @@ const categories = [
     items: [
       { label: "Conv1D", img: "convolutions/conv1d.png", nodeClass: "conv1d" },
       { label: "Conv2D", img: "convolutions/conv2d.png", nodeClass: "conv2d" },
-      { label: "Conv3D", img: "convolutions/conv3d.png", nodeClass: "conv3d" },
+      // { label: "Conv3D", img: "convolutions/conv3d.png", nodeClass: "conv3d" },
     ],
   },
   {
@@ -64,11 +64,7 @@ const categories = [
     key: "tensor",
     items: [
       { label: "Add", img: "tensoroperators/add.png", nodeClass: "add" },
-      {
-        label: "Multiply",
-        img: "tensoroperators/multiply.png",
-        nodeClass: "multiply",
-      },
+      { label: "Multiply", img: "tensoroperators/multiply.png", nodeClass: "multiply",},
     ],
   },
   {
@@ -83,16 +79,8 @@ const categories = [
     title: "Normalization",
     key: "norm",
     items: [
-      {
-        label: "LayerNorm",
-        img: "normalization/layernorm.png",
-        nodeClass: "layernorm",
-      },
-      {
-        label: "BatchNorm",
-        img: "normalization/batchnorm.png",
-        nodeClass: "batchnorm",
-      },
+      { label: "LayerNorm", img: "normalization/layernorm.png", nodeClass: "layernorm",},
+      { label: "BatchNorm", img: "normalization/batchnorm.png", nodeClass: "batchnorm",},
     ],
   },
 ];

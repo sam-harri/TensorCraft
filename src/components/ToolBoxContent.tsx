@@ -60,14 +60,6 @@ const categories = [
     ],
   },
   {
-    title: "Tensor Operators",
-    key: "tensor",
-    items: [
-      { label: "Add", img: "tensoroperators/add.png", nodeClass: "add" },
-      { label: "Multiply", img: "tensoroperators/multiply.png", nodeClass: "multiply",},
-    ],
-  },
-  {
     title: "Pooling",
     key: "pool",
     items: [
@@ -85,6 +77,24 @@ const categories = [
       { label: "LayerNorm", img: "normalization/layernorm.png", nodeClass: "layernorm",},
       { label: "BatchNorm1D", img: "normalization/batchnorm.png", nodeClass: "batchnorm1d",},
       { label: "BatchNorm2D", img: "normalization/batchnorm.png", nodeClass: "batchnorm2d",},
+    ],
+  },
+  {
+    title: "Dropout",
+    key: "dropout",
+    items: [
+      { label: "Dropout", img: "dropout/dropout.png", nodeClass: "dropout" },
+      { label: "Dropout1D", img: "dropout/dropout.png", nodeClass: "dropout1d" },
+      { label: "Dropout2D", img: "dropout/dropout.png", nodeClass: "dropout2d" },
+    ],
+  },
+  {
+    title: "Tensor Operators",
+    key: "tensor",
+    items: [
+      { label: "Permute", img: "tensor/tensor.png", nodeClass: "permute" },
+      { label: "Concat", img: "tensor/concat.png", nodeClass: "concat",},
+      { label: "Flatten", img: "tensor/flatten.png", nodeClass: "flatten",},
     ],
   },
 ];

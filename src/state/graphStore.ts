@@ -116,7 +116,8 @@ const useGraphStore = create<RFState>((set, get) => ({
 
     // Update children nodes
     childrenIds.forEach((childId) => {
-      updateNodeData(childId, { inputShape: null });
+      console.log("setting input shape to null")
+      updateNodeData(childId, { inputShape: null, inputShapeOrder: null});
     });
   },
 }));

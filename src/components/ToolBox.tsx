@@ -12,7 +12,7 @@ const ToolBox: React.FC = () => {
   return (
     <div className="relative h-full text-gray-700">
       <div
-        className={`overflow-auto hide-scrollbar absolute top-0 left-0 h-full transition-width bg-white/30 backdrop-blur-md shadow-md ${
+        className={`overflow-scroll hide-scrollbar absolute top-0 left-0 h-full transition-width bg-white/30 backdrop-blur-md shadow-md ${
           isCollapsed ? "-translate-x-[calc(100%)]" : "translate-x-0"
         } w-72 z-[51] border-r border-t border-gray-300 rounded-r-3xl transition-transform duration-500 overflow-hidden`}
       >

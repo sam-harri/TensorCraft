@@ -2,7 +2,7 @@ import type { NodeTypes } from "reactflow";
 import { PositionLoggerNode } from "./PositionLoggerNode";
 import {TextUpdaterNode} from "./TextUpdaterNodet";
 import FullyConnectedLayerNode from "./FullyConnectedLayerNode";
-import DropoutLayerNode from "./DropoutLayerNode";
+import DropoutLayerNode from "./Dropout/DropoutLayerNode";
 import RegressionOutputNode from "./RegressionOutputNode";
 import LinearLayerNode from "./ActivationFunctions/LinearLayerNode";
 import ReLULayerNode from "./ActivationFunctions/ReluNode";
@@ -20,13 +20,16 @@ import MaxPool2DLayerNode from "./Pooling/MaxPool2DLayerNode";
 import LayerNormLayerNode from "./Normalization/LayerNormLayerNode";
 import BatchNorm1DLayerNode from "./Normalization/BatchNorm1DLayerNode";
 import BatchNorm2DLayerNode from "./Normalization/BatchNorm2DLayerNode";
+import Dropout1DLayerNode from "./Dropout/Dropout1DLayerNode";
+import PermuteNode from "./TensorOperations/PermuteNode";
+import ConcatNode from "./TensorOperations/ConcatNode";
+import FlattenNode from "./TensorOperations/FlattenNode";
 
 
 export const nodeTypes = {
   "position-logger": PositionLoggerNode,
   "text-updater": TextUpdaterNode,
   "fully-connected-layer": FullyConnectedLayerNode,
-  "dropout-layer": DropoutLayerNode,
   "regression-output": RegressionOutputNode,
 
   "tanh": TanhNode,
@@ -45,6 +48,12 @@ export const nodeTypes = {
   "layernorm": LayerNormLayerNode,
   "batchnorm1d": BatchNorm1DLayerNode,
   "batchnorm2d": BatchNorm2DLayerNode,
+  "dropout": DropoutLayerNode,
+  "dropout1d": Dropout1DLayerNode,
+  "dropout2d": DropoutLayerNode,
+  "permute": PermuteNode,
+  "concat": ConcatNode,
+  "flatten": FlattenNode,
 } satisfies NodeTypes;
 
 export const initialData = {
@@ -186,6 +195,49 @@ export const initialData = {
     outputShape: null,
     inputShapeOrder: null,
     outputShapeOrder: null,
+  },
+  "dropout": {
+    p: 0.5,
+    inplace: false,
+    inputShape: null,
+    outputShape: null,
+    inputShapeOrder: null,
+    outputShapeOrder: null,
+  },
+  "dropout1d": {
+    p: 0.5,
+    inplace: false,
+    inputShape: null,
+    outputShape: null,
+    inputShapeOrder: null,
+    outputShapeOrder: null,
+  },
+  "dropout2d": {
+    p: 0.5,
+    inplace: false,
+    inputShape: null,
+    outputShape: null,
+    inputShapeOrder: null,
+    outputShapeOrder: null,
+  },
+  "permute": {
+    inputShape: null,
+    outputShape: null,
+    inputShapeOrder: null,
+    outputShapeOrder: null,
+  },
+  "concat": {
+    outputShape: null,
+    dim: null,
+    outputShapeOrder: null,
+  },
+  "flatten": {
+    inputShape: null,
+    outputShape: null,
+    inputShapeOrder: null,
+    outputShapeOrder: null,
+    flattenStart: 0,
+    flattenEnd: 0,
   },
 }
 

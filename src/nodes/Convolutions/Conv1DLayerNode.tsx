@@ -13,8 +13,11 @@ export type Conv1DLayerNodeData = {
   dilation: number | null;
   inputShape: string | null;
   outputShape: string | null;
+  inputShapeOrder: string | null;
+  outputShapeOrder: string | null;
 };
 
+const isNumeric = (str: string) => { return /^\d+$/.test(str);};
 const validatePositiveNumber = (value: number) => value > 0;
 const validateNonNegativeNumber = (value: number) => value >= 0;
 
@@ -43,10 +46,11 @@ const Conv1DLayerNode: React.FC<NodeProps<Conv1DLayerNodeData>> = (props) => {
   const [dilationError, setDilationError] = useState<string | null>(null);
 
   const calculateOutputLength = (inputLength: string) => {
-    if (inputLength === "L)" || padding === null || dilation === null || kernelSize === null || stride === null) {
-      return 'Lout';
+    const cleanedInputLength = inputLength.replace(/\s+/g, '');
+    if (!isNumeric(cleanedInputLength) || kernelSize === null || stride === null || padding === null || dilation === null) {
+      return "Lout";
     }
-    return Math.floor(((parseInt(inputLength) + 2 * padding - dilation * (kernelSize - 1) - 1) / stride) + 1).toString();
+    return Math.floor(((parseInt(cleanedInputLength) + 2 * padding - dilation * (kernelSize - 1) - 1) / stride) + 1).toString();
   };
 
   useEffect(() => {
@@ -61,6 +65,10 @@ const Conv1DLayerNode: React.FC<NodeProps<Conv1DLayerNodeData>> = (props) => {
       updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
   }, [props.data.inputShape, numFilters, kernelSize, stride, padding, dilation, updateNodeData]);
+
+  useEffect(() => {
+    updateNodeData(props.id, { outputShapeOrder: props.data.inputShapeOrder });
+  }, [props.data.inputShapeOrder])
 
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
@@ -138,8 +146,8 @@ const Conv1DLayerNode: React.FC<NodeProps<Conv1DLayerNodeData>> = (props) => {
             dataKey="dilation"
             effectDependencies={[updateNodeData]}
           />
-          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The length of the input sequence." />
-          <ShapeLabel input={false} shape={props.data.outputShape || 'Not Connected'} shapeHintMessage="The shape of the output tensor is (Number of Filters, Output Length)." />
+          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The shape of the input tensor is expected to be (Batch, Channels, Sequence Length)." />
+          <ShapeLabel input={false} shape={props.data.outputShape || 'Not Connected'} shapeHintMessage="The shape of the output tensor is (Batch, Channels, Output Length)." />
         </div>
       )}
       <Handle type="source" position={Position.Right} isConnectable={true} />

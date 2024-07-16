@@ -71,8 +71,11 @@ const categories = [
     title: "Pooling",
     key: "pool",
     items: [
-      { label: "MaxPool", img: "pooling/maxpool.png", nodeClass: "maxpool" },
-      { label: "AvgPool", img: "pooling/avgpool.png", nodeClass: "avgpool" },
+      { label: "MaxPool1D", img: "pooling/maxpool1d.png", nodeClass: "maxpool1d" },
+      { label: "MaxPool2D", img: "pooling/maxpool2d.png", nodeClass: "maxpool2d" },
+      // { label: "AvgPool1D", img: "pooling/avgpool1d.png", nodeClass: "avgpool1d" },
+      // { label: "AvgPool2D", img: "pooling/avgpool2d.png", nodeClass: "avgpool2d" },
+      
     ],
   },
   {
@@ -80,7 +83,8 @@ const categories = [
     key: "norm",
     items: [
       { label: "LayerNorm", img: "normalization/layernorm.png", nodeClass: "layernorm",},
-      { label: "BatchNorm", img: "normalization/batchnorm.png", nodeClass: "batchnorm",},
+      { label: "BatchNorm1D", img: "normalization/batchnorm.png", nodeClass: "batchnorm1d",},
+      { label: "BatchNorm2D", img: "normalization/batchnorm.png", nodeClass: "batchnorm2d",},
     ],
   },
 ];

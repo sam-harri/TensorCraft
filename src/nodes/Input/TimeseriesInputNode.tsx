@@ -4,12 +4,15 @@ import InputField from '../../components/InputField';
 import useGraphStore from '../../state/graphStore';
 import ShapeLabel from '../../components/ShapeLabel';
 import NodeHeader from '../../components/NodeHeader';
+import Checkbox from '../../components/Checkbox';
+import Hint from '../../components/Hint';
 
 export type TimeseriesInputLayerNodeData = {
   numFeatures: number | null;
   batchSize: number | null;
   sequenceLength: number | null;
   outputShape: string;
+  outputShapeOrder: string;
 };
 
 const validatePositiveNumber = (value: number) => value > 0;
@@ -28,11 +31,24 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
   const [batchSizeInput, setBatchSizeInput] = useState<string>(batchSize !== null ? batchSize.toString() : '');
   const [sequenceLengthInput, setSequenceLengthInput] = useState<string>(sequenceLength !== null ? sequenceLength.toString() : '');
 
+
+  const { outputShapeOrder } = props.data;
+
+  const handleOutputShapeOrderChange = (checked: boolean) => {
+    const newOrder = checked ? 'NCL' : 'NLC';
+    updateNodeData(props.id, { outputShapeOrder: newOrder});
+  };
+
   useEffect(() => {
-    const output = `(${batchSize ?? 'N'}, ${numFeatures ?? 'C'}, ${sequenceLength ?? 'L'})`;
+    let output;
+    if (outputShapeOrder === 'NCL') {
+      output = `(${batchSize ?? 'N'}, ${numFeatures ?? 'C'}, ${sequenceLength ?? 'L'})`;
+    } else {
+      output = `(${batchSize ?? 'N'}, ${sequenceLength ?? 'L'}, ${numFeatures ?? 'C'})`;
+    }
     setOutputShape(output);
-    updateNodeData(props.id, { outputShape: output });
-  }, [numFeatures, batchSize, sequenceLength, updateNodeData, props.id]);
+    updateNodeData(props.id, { outputShape: output, outputShapeOrder });
+  }, [numFeatures, batchSize, sequenceLength, outputShapeOrder, updateNodeData, props.id]);
 
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
@@ -79,7 +95,12 @@ const TimeseriesInputNode: React.FC<NodeProps<TimeseriesInputLayerNodeData>> = (
             props={props}
             dataKey="sequenceLength"
           />
-          <ShapeLabel input={false} shape={outputShape} shapeHintMessage="The shape of the tensor is (BatchSize x NumFeatures x SequenceLength)." />
+          <div className="mb-2 flex items-center">
+            <label className="block text-gray-600 text-sm mr-2">Feature First?</label>
+            <Checkbox id="featureFirstCheck" checked={outputShapeOrder === 'NCL'} onChangeFunction={handleOutputShapeOrderChange} />
+            <Hint message="Toggle the order of the output shape between (N, C, L) and (N, L, C)." />
+          </div>
+          <ShapeLabel input={false} shape={outputShape} shapeHintMessage={`The shape of the tensor is ${outputShapeOrder === 'NCL' ? '(BatchSize x NumFeatures x SequenceLength)' : '(BatchSize x SequenceLength x NumFeatures)'}.`} />
         </div>
       )}
       <Handle type="source" position={Position.Right} isConnectable={true} />

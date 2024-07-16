@@ -7,6 +7,8 @@ import ShapeLabel from '../../components/ShapeLabel';
 export type TanhLayerNodeData = {
   inputShape: string | null;
   outputShape: string | null;
+  inputShapeOrder: string | null;
+  outputShapeOrder: string | null;
 };
 
 const TanhNode: React.FC<NodeProps<TanhLayerNodeData>> = (props) => {
@@ -21,6 +23,10 @@ const TanhNode: React.FC<NodeProps<TanhLayerNodeData>> = (props) => {
       updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
   }, [props.data.inputShape, updateNodeData]);
+
+  useEffect(() => {
+    updateNodeData(props.id, { outputShapeOrder: props.data.inputShapeOrder });
+  }, [props.data.inputShapeOrder])
 
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">

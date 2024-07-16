@@ -7,8 +7,7 @@ import Checkbox from '../../components/Checkbox';
 import ShapeLabel from '../../components/ShapeLabel';
 import Hint from '../../components/Hint';
 
-export type BatchNorm1dLayerNodeType = {
-  numFeatures: number | null;
+export type BatchNorm2dLayerNodeType = {
   eps: number | null;
   momentum: number | null;
   affine: boolean;
@@ -22,7 +21,7 @@ export type BatchNorm1dLayerNodeType = {
 const validatePositiveNumber = (value: number) => value > 0;
 const validateNonNegativeNumber = (value: number) => value >= 0;
 
-const BatchNorm1DLayerNode: React.FC<NodeProps<BatchNorm1dLayerNodeType>> = (props) => {
+const BatchNorm2DLayerNode: React.FC<NodeProps<BatchNorm2dLayerNodeType>> = (props) => {
   const updateNodeData = useGraphStore((state) => state.updateNodeData);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
@@ -61,7 +60,7 @@ const BatchNorm1DLayerNode: React.FC<NodeProps<BatchNorm1dLayerNodeType>> = (pro
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
       <Handle type="target" position={Position.Left} isConnectable={true} />
-      <NodeHeader title="BatchNorm1d" isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} imageSource="normalization/batchnorm.png" imageAlt="BatchNorm1d" props={props} />
+      <NodeHeader title="BatchNorm2d" isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} imageSource="normalization/batchnorm.png" imageAlt="BatchNorm2d" props={props} />
       {!isCollapsed && (
         <div className="p-4 border-t border-gray-200">
           <InputField
@@ -102,7 +101,7 @@ const BatchNorm1DLayerNode: React.FC<NodeProps<BatchNorm1dLayerNodeType>> = (pro
             <Checkbox id="trackRunningStatsCheck" checked={trackRunningStats} onChangeFunction={handleTrackRunningStatsChange} />
             <Hint message="If True, this module tracks the running mean and variance, otherwise, it uses batch statistics during evaluation." />
           </div>
-          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The shape of the input tensor is expected to be (Batch, Channels, Length) or (Batch, Channels)" />
+          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The shape of the input tensor is expected to be (Batch, Channels, Height, Width)" />
           <ShapeLabel input={false} shape={props.data.outputShape || 'Not Connected'} shapeHintMessage="The shape of the output tensor is the same as the input shape." />
         </div>
       )}
@@ -111,4 +110,4 @@ const BatchNorm1DLayerNode: React.FC<NodeProps<BatchNorm1dLayerNodeType>> = (pro
   );
 };
 
-export default BatchNorm1DLayerNode;
+export default BatchNorm2DLayerNode;

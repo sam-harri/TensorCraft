@@ -62,7 +62,6 @@ const useGraphStore = create<RFState>((set, get) => ({
       });
       get().updateChildren(source);
     }
-    console.log(get().edges);
   },
   onReconnect: (oldEdge: Edge, newConnection: Connection) => {
     set({
@@ -93,8 +92,7 @@ const useGraphStore = create<RFState>((set, get) => ({
     childrenEdges.forEach((edge) => {
       const childNode = nodes.find((node) => node.id === edge.target);
       if (childNode) {
-        console.log(`Updating child ${childNode.id} of parent ${parentId}`)
-        updateNodeData(childNode.id, { inputShape: parentNode.data.outputShape });
+        updateNodeData(childNode.id, { inputShape: parentNode.data.outputShape, inputShapeOrder: parentNode.data.outputShapeOrder});
       }
     });
   },

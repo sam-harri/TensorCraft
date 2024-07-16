@@ -4,13 +4,16 @@ import useGraphStore from '../../state/graphStore';
 import InputField from '../../components/InputField';
 import NodeHeader from '../../components/NodeHeader';
 import ShapeLabel from '../../components/ShapeLabel';
+import Checkbox from '../../components/Checkbox';
+import Hint from '../../components/Hint';
 
-export type Conv2DLayerNodeData = {
-  numFilters: number | null;
+export type MaxPool1DLayerNodeData = {
   kernelSize: number | null;
   stride: number | null;
   padding: number | null;
   dilation: number | null;
+  returnIndices: boolean;
+  ceilMode: boolean;
   inputShape: string | null;
   outputShape: string | null;
   inputShapeOrder: string | null;
@@ -19,15 +22,11 @@ export type Conv2DLayerNodeData = {
 
 const validatePositiveNumber = (value: number) => value > 0;
 const validateNonNegativeNumber = (value: number) => value >= 0;
-const isNumeric = (str: string) => { return /^\d+$/.test(str);};
+const isNumeric = (value: string) => !isNaN(Number(value));
 
-const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
+const MaxPool1DLayerNode: React.FC<NodeProps<MaxPool1DLayerNodeData>> = (props) => {
   const updateNodeData = useGraphStore((state) => state.updateNodeData);
   const [isCollapsed, setIsCollapsed] = useState(true);
-
-  const [numFilters, setNumFilters] = useState<number | null>(props.data.numFilters ?? null);
-  const [numFiltersInput, setNumFiltersInput] = useState<string>(numFilters !== null ? numFilters.toString() : '');
-  const [numFiltersError, setNumFiltersError] = useState<string | null>(null);
 
   const [kernelSize, setKernelSize] = useState<number | null>(props.data.kernelSize ?? null);
   const [kernelSizeInput, setKernelSizeInput] = useState<string>(kernelSize !== null ? kernelSize.toString() : '');
@@ -45,7 +44,18 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
   const [dilationInput, setDilationInput] = useState<string>(dilation !== null ? dilation.toString() : '');
   const [dilationError, setDilationError] = useState<string | null>(null);
 
-  const calculateOutputLength = (inputLength: string, kernelSize: number | null, stride: number | null, padding: number | null, dilation: number | null) => {
+  const { ceilMode } = props.data;
+  // const { returnIndices, ceilMode } = props.data;
+
+  // const handleReturnIndicesChange = (checked: boolean) => {
+  //   updateNodeData(props.id, { returnIndices: checked });
+  // };
+
+  const handleCeilModeChange = (checked: boolean) => {
+    updateNodeData(props.id, { ceilMode: checked });
+  };
+
+  const calculateOutputLength = (inputLength: string) => {
     const cleanedInputLength = inputLength.replace(/\s+/g, '');
     if (!isNumeric(cleanedInputLength) || kernelSize === null || stride === null || padding === null || dilation === null) {
       return "Lout";
@@ -53,52 +63,28 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
     return Math.floor(((parseInt(cleanedInputLength) + 2 * padding - dilation * (kernelSize - 1) - 1) / stride) + 1).toString();
   };
 
-  const calculateOutputWidth = (inputWidth: string, kernelSize: number | null, stride: number | null, padding: number | null, dilation: number | null) => {
-    const cleanedInputWidth = inputWidth.replace(")","").replace(/\s+/g, '');
-    if (!isNumeric(cleanedInputWidth) || kernelSize === null || stride === null || padding === null || dilation === null) {
-      return "Wout";
-    }
-    return Math.floor(((parseInt(cleanedInputWidth) + 2 * padding - dilation * (kernelSize - 1) - 1) / stride) + 1).toString();
-  };
-
-  useEffect(() => {
-    updateNodeData(props.id, { outputShapeOrder: props.data.inputShapeOrder });
-  }, [props.data.inputShapeOrder])
-
   useEffect(() => {
     const inputShape = props.data.inputShape;
     if (inputShape) {
       const inputShapeArr = inputShape.split(',').map((dim) => dim.trim());
-      inputShapeArr[inputShapeArr.length - 2] = calculateOutputLength(inputShapeArr[inputShapeArr.length - 2], kernelSize, stride, padding, dilation);
-      inputShapeArr[inputShapeArr.length - 1] = calculateOutputWidth(inputShapeArr[inputShapeArr.length - 1], kernelSize, stride, padding, dilation);
-      inputShapeArr[1] = numFilters !== null ? numFilters.toString() : 'Cout';
+      inputShapeArr[inputShapeArr.length - 1] = calculateOutputLength(inputShapeArr[inputShapeArr.length - 1]);
       const newOutputShape = `${inputShapeArr.join(', ')})`;
       updateNodeData(props.id, { outputShape: newOutputShape });
     } else {
       updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
-  }, [props.data.inputShape, numFilters, kernelSize, stride, padding, dilation, updateNodeData]);
+  }, [props.data.inputShape, kernelSize, stride, padding, dilation, updateNodeData]);
+
+  useEffect(() => {
+    updateNodeData(props.id, { outputShapeOrder: props.data.inputShapeOrder });
+  }, [props.data.inputShapeOrder])
 
   return (
     <div className="bg-white shadow-md rounded border border-gray-300 w-72 relative">
       <Handle type="target" position={Position.Left} isConnectable={true} />
-      <NodeHeader title="Conv2D Layer" isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} imageSource="convolutions/conv2d.png" imageAlt="Conv2D" props={props} />
+      <NodeHeader title="MaxPool1D Layer" isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} imageSource="pooling/maxpool1d.png" imageAlt="MaxPool1D" props={props} />
       {!isCollapsed && (
         <div className="p-4 border-t border-gray-200">
-          <InputField
-            label="Number of Filters"
-            valueInput={numFiltersInput}
-            setValueInput={setNumFiltersInput}
-            valueError={numFiltersError}
-            setValueError={setNumFiltersError}
-            setValue={setNumFilters}
-            errorMessage="Number of filters must be a positive number."
-            hintMessage="The number of filters in the convolution layer."
-            validationFunction={validatePositiveNumber}
-            props={props}
-            dataKey="numFilters"
-            effectDependencies={[updateNodeData]}
-          />
           <InputField
             label="Kernel Size"
             valueInput={kernelSizeInput}
@@ -107,7 +93,7 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
             setValueError={setKernelSizeError}
             setValue={setKernelSize}
             errorMessage="Kernel size must be a positive number."
-            hintMessage="The size of the kernel."
+            hintMessage="Size of the sliding window used for max pooling."
             validationFunction={validatePositiveNumber}
             props={props}
             dataKey="kernelSize"
@@ -121,7 +107,7 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
             setValueError={setStrideError}
             setValue={setStride}
             errorMessage="Stride must be a positive number."
-            hintMessage="The stride of the convolution."
+            hintMessage="Stride of the sliding window during max pooling."
             validationFunction={validatePositiveNumber}
             props={props}
             dataKey="stride"
@@ -135,7 +121,7 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
             setValueError={setPaddingError}
             setValue={setPadding}
             errorMessage="Padding cannot be less than 0."
-            hintMessage="The amount of padding added to the input."
+            hintMessage="Padding added to both sides of the input."
             validationFunction={validateNonNegativeNumber}
             props={props}
             dataKey="padding"
@@ -149,14 +135,24 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
             setValueError={setDilationError}
             setValue={setDilation}
             errorMessage="Dilation must be a positive number."
-            hintMessage="The spacing between kernel elements."
+            hintMessage="Spacing between elements within the sliding window."
             validationFunction={validatePositiveNumber}
             props={props}
             dataKey="dilation"
             effectDependencies={[updateNodeData]}
           />
-          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The dimensions of the input tensor." />
-          <ShapeLabel input={false} shape={props.data.outputShape || 'Not Connected'} shapeHintMessage="The shape of the output tensor is (Number of Filters, Output Height, Output Width)." />
+          {/* <div className="mb-2 flex items-center">
+            <label className="block text-gray-600 text-sm mr-2">Return Indices:</label>
+            <Checkbox id="returnIndicesCheck" checked={returnIndices} onChangeFunction={handleReturnIndicesChange} />
+            <Hint message="If True, the indices of the max values will be returned along with the max values. Useful for unpooling layers." />
+          </div> */}
+          <div className="mb-2 flex items-center">
+            <label className="block text-gray-600 text-sm mr-2">Ceil Mode:</label>
+            <Checkbox id="ceilModeCheck" checked={ceilMode} onChangeFunction={handleCeilModeChange} />
+            <Hint message="If True, will use ceil instead of floor to compute the output shape, ensuring every element is covered by a sliding window." />
+          </div>
+          <ShapeLabel input={true} shape={props.data.inputShape || 'Not Connected'} shapeHintMessage="The shape of the input tensor is expected to be (Batch, Channels, Sequence Length)." />
+          <ShapeLabel input={false} shape={props.data.outputShape || 'Not Connected'} shapeHintMessage="The shape of the output tensor is expected to be (Batch, Channels, Output Length)." />
         </div>
       )}
       <Handle type="source" position={Position.Right} isConnectable={true} />
@@ -164,4 +160,4 @@ const Conv2DLayerNode: React.FC<NodeProps<Conv2DLayerNodeData>> = (props) => {
   );
 };
 
-export default Conv2DLayerNode;
+export default MaxPool1DLayerNode;

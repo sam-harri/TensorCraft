@@ -12,6 +12,8 @@ export type FullyConnectedNodeData = {
   inputShape: string | null;
   outputShape: string | null;
   bias: boolean;
+  inputShapeOrder: string | null;
+  outputShapeOrder: string | null;
 };
 
 const validatePositiveNumber = (value: number) => value >= 1;
@@ -21,7 +23,7 @@ const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (pr
   const [isCollapsed, setIsCollapsed] = useState(true);
 
   const { bias } = props.data;
-  
+
   const [numNeurons, setNumNeurons] = useState<number | null>(props.data.numNeurons ?? null);
   const [numNeuronsInput, setNumNeuronsInput] = useState<string>(numNeurons !== null ? numNeurons.toString() : '');
   const [numNeuronsError, setNumNeuronsError] = useState<string | null>(null);
@@ -31,12 +33,17 @@ const FullyConnectedLayerNode: React.FC<NodeProps<FullyConnectedNodeData>> = (pr
     if (inputShape) {
       const inputShapeArr = inputShape.split(',').map((dim) => dim.trim());
       inputShapeArr[inputShapeArr.length - 1] = numNeurons !== null ? numNeurons.toString() : 'H';
-      const newOutputShape = `(${inputShapeArr.join(', ')})`;
+      const newOutputShape = `${inputShapeArr.join(', ')})`;
       updateNodeData(props.id, { outputShape: newOutputShape });
     } else {
       updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
   }, [props.data.inputShape, numNeurons, updateNodeData]);
+
+  useEffect(() => {
+    const inputShapeOrder = props.data.inputShapeOrder
+    updateNodeData(props.id, { outputShapeOrder: inputShapeOrder ? inputShapeOrder.substring(0, inputShapeOrder.length - 1) + 'H' : null });
+  }, [props.data.inputShapeOrder])
 
   const handleBiasChange = (checked: boolean) => {
     updateNodeData(props.id, { bias: checked });

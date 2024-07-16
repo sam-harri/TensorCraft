@@ -10,6 +10,8 @@ export type ReLULayerNodeData = {
   inputShape: string | null;
   outputShape: string | null;
   inplace: boolean;
+  inputShapeOrder: string | null;
+  outputShapeOrder: string | null;
 };
 
 const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
@@ -26,6 +28,10 @@ const ReLULayerNode: React.FC<NodeProps<ReLULayerNodeData>> = (props) => {
       updateNodeData(props.id, { outputShape: 'Not Connected' });
     }
   }, [props.data.inputShape, updateNodeData]);
+
+  useEffect(() => {
+    updateNodeData(props.id, { outputShapeOrder: props.data.inputShapeOrder });
+  }, [props.data.inputShapeOrder])
 
   const handleInplaceChange = (checked: boolean) => {
     updateNodeData(props.id, { inplace: checked });

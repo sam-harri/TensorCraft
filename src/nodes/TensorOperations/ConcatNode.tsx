@@ -89,7 +89,7 @@ const ConcatNode: React.FC<NodeProps> = (props) => {
           setError("The dimensions of the input tensors do not match.");
           updateNodeData(props.id, { outputShape: "Not Connected", outputShapeOrder: null });
         } else {
-          updateNodeData(props.id, { outputShape: `(${outputShape})`, outputShapeOrder: node1?.data.outputShapeOrder });
+          updateNodeData(props.id, { outputShape: `(${outputShape})`, outputShapeOrder: node1?.data.outputShapeOrder, dim });
         }
       } else {
         updateNodeData(props.id, { outputShape: "Not Connected", outputShapeOrder: null });

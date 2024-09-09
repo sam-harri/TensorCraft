@@ -8,7 +8,7 @@ import ShapeLabel from "../../components/ShapeLabel";
 import Hint from "../../components/Hint";
 
 export type LayerNormLayerNodeType = {
-  normalizedShape: number[];
+  normalizedShape: number | null;
   eps: number | null;
   elementwiseAffine: boolean;
   bias: boolean;
@@ -20,14 +20,12 @@ export type LayerNormLayerNodeType = {
 
 const validatePositiveNumber = (value: number) => value > 0;
 
-const LayerNormLayerNode: React.FC<NodeProps<LayerNormLayerNodeType>> = (
-  props
-) => {
+const LayerNormLayerNode: React.FC<NodeProps<LayerNormLayerNodeType>> = (props) => {
   const updateNodeData = useGraphStore((state) => state.updateNodeData);
   const [isCollapsed, setIsCollapsed] = useState(true);
 
-  const [normalizedShape, setNormalizedShape] = useState<number[]>(
-    props.data.normalizedShape ?? []
+  const [normalizedShape, setNormalizedShape] = useState<number | null>(
+    props.data.normalizedShape ?? null
   );
   const [eps, setEps] = useState<number | null>(props.data.eps ?? null);
   const [epsInput, setEpsInput] = useState<string>(
@@ -45,18 +43,10 @@ const LayerNormLayerNode: React.FC<NodeProps<LayerNormLayerNodeType>> = (
     updateNodeData(props.id, { bias: checked });
   };
 
-  const handleDimensionChange = (index: number, checked: boolean) => {
-    const newNormalizedShape = [...normalizedShape];
-    if (checked) {
-      newNormalizedShape.push(index);
-    } else {
-      const position = newNormalizedShape.indexOf(index);
-      if (position > -1) {
-        newNormalizedShape.splice(position, 1);
-      }
-    }
-    setNormalizedShape(newNormalizedShape);
-    updateNodeData(props.id, { normalizedShape: newNormalizedShape });
+  const handleNormalizeShapeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = parseInt(event.target.value, 10);
+    setNormalizedShape(value);
+    updateNodeData(props.id, { normalizedShape: value });
   };
 
   useEffect(() => {
@@ -88,26 +78,27 @@ const LayerNormLayerNode: React.FC<NodeProps<LayerNormLayerNodeType>> = (
           <div className="mb-2">
             <div className="flex items-center">
               <label className="text-gray-600 text-sm mb-1 mr-2">
-                Normalized Dimensions:
+                Normalize starting at:
               </label>
-              <Hint message="Select dimensions to normalize across. For example, Batch (N), Channels (C), Height (H)...." />
+              <Hint message="Select the starting dimension to normalize from. Normalization will include this dimension and all dimensions after it." />
             </div>
-            {inputShapeOrder &&
-              inputShapeOrder.split("").map((dim, index) => (
-                <div key={index} className="flex items-center mb-1">
-                  <Checkbox
-                    id={`normalize${dim}`}
-                    checked={normalizedShape.includes(index)}
-                    onChangeFunction={(checked) =>
-                      handleDimensionChange(index, checked)
-                    }
-                  />
-                  <label htmlFor={`normalize${dim}`} className="ml-2 text-sm">
+            {inputShapeOrder && (
+              <select
+                className="form-select block w-full mt-1"
+                value={normalizedShape ?? ""}
+                onChange={handleNormalizeShapeChange}
+              >
+                <option value="" disabled>Select dimension</option>
+                {inputShapeOrder.split("").map((dim, index) => (
+                  <option key={index} value={index}>
                     {dim}
-                  </label>
-                </div>
-              ))}
-            {(!inputShapeOrder || inputShapeOrder.length === 0) && (<div className="text-xs text-gray-500">Connect a node to see dimensions</div>)}
+                  </option>
+                ))}
+              </select>
+            )}
+            {(!inputShapeOrder || inputShapeOrder.length === 0) && (
+              <div className="text-xs text-gray-500">Connect a node to see dimensions</div>
+            )}
           </div>
           <InputField
             label="Epsilon"

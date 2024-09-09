@@ -1,0 +1,4 @@
+*.zip
+*.json
+venv/
+pytorch_lambda/

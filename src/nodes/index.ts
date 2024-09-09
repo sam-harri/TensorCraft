@@ -167,7 +167,7 @@ export const initialData = {
     outputShapeOrder: null,
   },
   "layernorm": {
-    normalizedShape: [],
+    normalizedShape: null,
     eps: 1e-5,
     elementwiseAffine: true,
     bias: true,

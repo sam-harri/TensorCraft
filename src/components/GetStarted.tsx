@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import 'animate.css'; // Import animate.css library
+import { Link } from "react-router-dom";
 
 const GetStarted: React.FC = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
@@ -53,31 +54,30 @@ const GetStarted: React.FC = () => {
           </div>
           <div className="pt-2 lg:ml-12">
             <div className="flex space-x-4">
-              <a
-                href="/contact/contact-v1"
-                className="bg-gray-100 text-black border border-black px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
-              >
-                <div>Get Started</div>
-                <img
-                  src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bfaf9072a996e07cc844b_Arrow%20Black.svg"
-                  loading="lazy"
-                  alt="Arrow"
-                  className="ml-2"
-                />
-              </a>
-              <a
-                href="http://Google.com"
-                target="_blank"
-                className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
-              >
-                <div>Model Builder</div>
-                <img
-                  src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bf78957ad86c050eb4989_Button%20Arrow.svg"
-                  loading="lazy"
-                  alt="Arrow"
-                  className="ml-2"
-                />
-              </a>
+              <Link
+              to="/createaccount"
+              className="bg-gray-100 text-black border border-black px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
+            >
+              <div>Get Started</div>
+              <img
+                src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bfaf9072a996e07cc844b_Arrow%20Black.svg"
+                loading="lazy"
+                alt="Arrow"
+                className="ml-2"
+              />
+            </Link>
+              <Link
+              to="/Craft"
+              className="bg-black text-white px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300"
+            >
+              <div>Model Builder</div>
+              <img
+                src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bf78957ad86c050eb4989_Button%20Arrow.svg"
+                loading="lazy"
+                alt="Arrow"
+                className="ml-2"
+              />
+            </Link>
             </div>
           </div>
         </div>

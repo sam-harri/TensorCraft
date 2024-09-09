@@ -54,7 +54,7 @@ const Conv1DLayerNode: React.FC<NodeProps<Conv1DLayerNodeData>> = (props) => {
   };
 
   useEffect(() => {
-    const inputShape = props.data.inputShape;
+    const inputShape =  props.data.inputShape?.replace(/[()]/g, '');
     if (inputShape) {
       const inputShapeArr = inputShape.split(',').map((dim) => dim.trim());
       inputShapeArr[inputShapeArr.length - 1] = calculateOutputLength(inputShapeArr[inputShapeArr.length - 1]);

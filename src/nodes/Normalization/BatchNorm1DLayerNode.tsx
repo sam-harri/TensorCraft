@@ -8,7 +8,6 @@ import ShapeLabel from '../../components/ShapeLabel';
 import Hint from '../../components/Hint';
 
 export type BatchNorm1dLayerNodeType = {
-  numFeatures: number | null;
   eps: number | null;
   momentum: number | null;
   affine: boolean;

@@ -1,6 +1,9 @@
 import { toast, ToastContainer } from "react-toastify";
 import FrameworkDropdown from "./FrameworkDropdown";
 import SyntaxHighlighter from "react-syntax-highlighter";
+import useGraphStore from "../state/graphStore";
+import { useEffect, useState } from "react";
+import axiosInstance from "../axiosInstance";
 
 // @ts-ignore
 const atomOneDark = {
@@ -124,203 +127,136 @@ const atomOneDark = {
   },
 };
 
-const codeString = `import math
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
+export type ModelCompilationType = {
+  isCollapsed: boolean,
+}
 
-class RNNModel(nn.Module):
+const ModelCompilationContent: React.FC<ModelCompilationType> = ({isCollapsed}) => {
+  const [codeString, setCodeString] = useState("");
+  const [previousNodes, setPreviousNodes] = useState<any>([]);
 
-    def __init__(self, rnn_type : string, ntoken, ninp, nhid, nlayers, dropout=0.5, tie_weights=False):
-        super(RNNModel, self).__init__()
-        self.ntoken = ntoken
-        self.drop = nn.Dropout(dropout)
-        self.encoder = nn.Embedding(ntoken, ninp)
-        if rnn_type in ['LSTM', 'GRU']:
-            self.rnn = getattr(nn, rnn_type)(ninp, nhid, nlayers, dropout=dropout)
-        else:
-            try:
-                nonlinearity = {'RNN_TANH': 'tanh', 'RNN_RELU': 'relu'}[rnn_type]
-            except KeyError as e:
-                raise ValueError( """An invalid option for --model was supplied,
-                                 options are ['LSTM', 'GRU', 'RNN_TANH' or 'RNN_RELU']""") from e
-            self.rnn = nn.RNN(ninp, nhid, nlayers, nonlinearity=nonlinearity, dropout=dropout)
-        self.decoder = nn.Linear(nhid, ntoken)
-        # Optionally tie weights as in:
-        # "Using the Output Embedding to Improve Language Models" (Press & Wolf 2016)
-        # https://arxiv.org/abs/1608.05859
-        # and
-        # "Tying Word Vectors and Word Classifiers: A Loss Framework for Language Modeling" (Inan et al. 2016)
-        # https://arxiv.org/abs/1611.01462
-        if tie_weights:
-            if nhid != ninp:
-                raise ValueError('When using the tied flag, nhid must be equal to emsize')
-            self.decoder.weight = self.encoder.weight
+  const nodes = useGraphStore((state) => state.nodes);
+  const edges = useGraphStore((state) => state.edges);
 
-        self.init_weights()
+  const filterNodeProperties = (nodes: any[]) => {
+    return nodes.map(node => {
+      const { position, dragging, positionAbsolute, selected, ...rest } = node;
+      return rest;
+    });
+  };
 
-        self.rnn_type = rnn_type
-        self.nhid = nhid
-        self.nlayers = nlayers
+  const deepEqual = (obj1 :any, obj2: any) => {
+    if (obj1 === obj2) return true;
+    if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 == null || obj2 == null) return false;
 
-    def init_weights(self):
-        initrange = 0.1
-        nn.init.uniform_(self.encoder.weight, -initrange, initrange)
-        nn.init.zeros_(self.decoder.bias)
-        nn.init.uniform_(self.decoder.weight, -initrange, initrange)
+    const keys1 = Object.keys(obj1);
+    const keys2 = Object.keys(obj2);
 
-    def forward(self, input, hidden):
-        emb = self.drop(self.encoder(input))
-        output, hidden = self.rnn(emb, hidden)
-        output = self.drop(output)
-        decoded = self.decoder(output)
-        decoded = decoded.view(-1, self.ntoken)
-        return F.log_softmax(decoded, dim=1), hidden
+    if (keys1.length !== keys2.length) return false;
 
-    def init_hidden(self, bsz):
-        weight = next(self.parameters())
-        if self.rnn_type == 'LSTM':
-            return (weight.new_zeros(self.nlayers, bsz, self.nhid),
-                    weight.new_zeros(self.nlayers, bsz, self.nhid))
-        else:
-            return weight.new_zeros(self.nlayers, bsz, self.nhid)
+    for (const key of keys1) {
+      if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) return false;
+    }
 
-# Temporarily leave PositionalEncoding module here. Will be moved somewhere else.
-class PositionalEncoding(nn.Module):
-    """Inject some information about the relative or absolute position of the tokens in the sequence.
-        The positional encodings have the same dimension as the embeddings, so that the two can be summed.
-        Here, we use sine and cosine functions of different frequencies.
-    .. math:
-        \text{PosEncoder}(pos, 2i) = sin(pos/10000^(2i/d_model))
-        \text{PosEncoder}(pos, 2i+1) = cos(pos/10000^(2i/d_model))
-        \text{where pos is the word position and i is the embed idx)
-    Args:
-        d_model: the embed dim (required).
-        dropout: the dropout value (default=0.1).
-        max_len: the max. length of the incoming sequence 00).
-    Examples:
-        >>> pos_encoder = PositionalEncoding(d_model)
-    """
+    return true;
+  };
 
-    def __init__(self, d_model, dropout=0.1,00):
-        super(PositionalEncoding, self).__init__()
-        self.dropout = nn.Dropout(p=dropout)
-
-        pe = torch.zeros(max_len, d_model)
-        position = torch.arange(0, max_len, dtype=torch.float).unsqueeze(1)
-        div_term = torch.exp(torch.arange(0, d_model, 2).float() * (-math.log(10000.0) / d_model))
-        pe[:, 0::2] = torch.sin(position * div_term)
-        pe[:, 1::2] = torch.cos(position * div_term)
-        pe = pe.unsqueeze(0).transpose(0, 1)
-        self.register_buffer('pe', pe)
-
-    def forward(self, x):
-        r"""Inputs of forward function
-        Args:
-            x: the sequence fed to the positional encoder model (required).
-        Shape:
-            x: [sequence length, batch size, embed dim]
-            output: [sequence length, batch size, embed dim]
-        Examples:
-            >>> output = pos_encoder(x)
-        """
-
-        x = x + self.pe[:x.size(0), :]
-        return self.dropout(x)
-
-class TransformerModel(nn.Transformer):
-    """Container module with an encoder, a recurrent or transformer module, and a decoder."""
-
-    def __init__(self, ntoken, ninp, nhead, nhid, nlayers, dropout=0.5):
-        super(TransformerModel, self).__init__(d_model=ninp, nhead=nhead, dim_feedforward=nhid, num_encoder_layers=nlayers)
-        self.model_type = 'Transformer'
-        self.src_mask = None
-        self.pos_encoder = PositionalEncoding(ninp, dropout)
-
-        self.input_emb = nn.Embedding(ntoken, ninp)
-        self.ninp = ninp
-        self.decoder = nn.Linear(ninp, ntoken)
-
-        self.init_weights()
-
-    def _generate_square_subsequent_mask(self, sz):
-        return torch.log(torch.tril(torch.ones(sz,sz)))
-
-    def init_weights(self):
-        initrange = 0.1
-        nn.init.uniform_(self.input_emb.weight, -initrange, initrange)
-        nn.init.zeros_(self.decoder.bias)
-        nn.init.uniform_(self.decoder.weight, -initrange, initrange)
-
-    def forward(self, src, has_mask=True):
-        if has_mask:
-            device = src.device
-            if self.src_mask is None or self.src_mask.size(0) != len(src):
-                mask = self._generate_square_subsequent_mask(len(src)).to(device)
-                self.src_mask = mask
-        else:
-            self.src_mask = None
-
-        src = self.input_emb(src) * math.sqrt(self.ninp)
-        src = self.pos_encoder(src)
-        output = self.encoder(src, mask=self.src_mask)
-        output = self.decoder(output)
-        return F.log_softmax(output, dim=-1)
-  `;
-
-
-  const ModelCompilationContent: React.FC = () => {
-    const copyToClipboard = () => {
-      navigator.clipboard.writeText(codeString)
-        .then(() => {
-          toast.success("Code copied to clipboard!", { autoClose: 2000, position: "top-right" });
+  useEffect(() => {
+    if (isCollapsed) {
+      return;
+    }
+    const filteredNodes = filterNodeProperties(nodes);
+    if (!deepEqual(filteredNodes, previousNodes)) {
+      axiosInstance.post("/compile/pytorch", { nodes: filteredNodes, edges })
+        .then((response) => {
+          if (response.status === 200) {
+            const responseBody = JSON.parse(response.data.body);
+            setCodeString(responseBody.model_code);
+            setPreviousNodes(filteredNodes); // Update previousNodes state
+          } else {
+            toast.error("Failed to compile model", { autoClose: 2000, position: "top-right" });
+          }
         })
-        .catch((_) => {
-          toast.error("Failed to copy code to clipboard!", { autoClose: 2000, position: "top-right" });
+        .catch((error) => {
+          toast.error(`Error: ${error.message}`, { autoClose: 2000, position: "top-right" });
         });
-    };
-  
-    return (
-      <div className="flex flex-col h-full mx-6">
-        <div className="flex-none mt-6 flex flex-row items-center space-x-4 mb-4">
-          <FrameworkDropdown />
-          <button
-            type="submit"
-            className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
-          >
-            Complete Model
-          </button>
-          <button
-            type="submit"
-            className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
-          >
-            Visualize Model
-          </button>
-          <ToastContainer/>
-        </div>
-  
-        <div className="flex-none">
-          <div className="w-full bg-slate-900 border-t border-x-3 rounded-t-lg h-6 opacity-85 flex flex-row items-center justify-end pr-2">
-            <p className="text-gray-200 text-xs cursor-pointer" onClick={copyToClipboard}>Copy Code</p>
-            <img src="copy.svg" width={18} className="cursor-pointer" onClick={copyToClipboard} />
-          </div>
-        </div>
-        <div className="flex-1 overflow-auto hide-scrollbar">
-          <SyntaxHighlighter
-            language="python"
-            // @ts-ignore super weird issue with the react-highlighter package, it's not recognizing the style prop type as valid
-            style={atomOneDark}
-            showLineNumbers={true}
-            wrapLongLines={true}
-          >
-            {codeString}
-          </SyntaxHighlighter>
-        </div>
-        <div className="flex-none">
-          <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85 mb-6"></div>
+    }
+  }, [isCollapsed, nodes]);
+
+
+  const copyToClipboard = (data: string) => {
+    navigator.clipboard.writeText(data)
+      .then(() => {
+        toast.success("Code copied to clipboard!", { autoClose: 2000, position: "top-right" });
+      })
+      .catch((_) => {
+        toast.error("Failed to copy code to clipboard!", { autoClose: 2000, position: "top-right" });
+      });
+  };
+
+  const handleCopyNodes = () => {
+    copyToClipboard(JSON.stringify(nodes, null, 2));
+  };
+
+  const handleCopyEdges = () => {
+    copyToClipboard(JSON.stringify(edges, null, 2));
+  };
+
+  return (
+    <div className="flex flex-col h-full mx-6">
+      <div className="flex-none mt-6 flex flex-row items-center space-x-4 mb-4">
+        <FrameworkDropdown />
+        {/* <button
+          type="submit"
+          className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
+        >
+          Complete Model
+        </button>
+        <button
+          type="submit"
+          className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 opacity-80 hover:scale-105"
+        >
+          Visualize Model
+        </button>
+        <button
+          type="button"
+          onClick={handleCopyNodes}
+          className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 opacity-80 hover:scale-105"
+        >
+          Copy Nodes
+        </button>
+        <button
+          type="button"
+          onClick={handleCopyEdges}
+          className="mt-1 justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 opacity-80 hover:scale-105"
+        >
+          Copy Edges
+        </button> */}
+        <ToastContainer />
+      </div>
+
+      <div className="flex-none">
+        <div className="w-full bg-slate-900 border-t border-x-3 rounded-t-lg h-6 opacity-85 flex flex-row items-center justify-end pr-2">
+          <p className="text-gray-200 text-xs cursor-pointer" onClick={() => copyToClipboard(codeString)}>Copy Code</p>
+          <img src="copy.svg" width={18} className="cursor-pointer" onClick={() => copyToClipboard(codeString)} />
         </div>
       </div>
-    );
-  };
-  
-  export default ModelCompilationContent;
+      <div className="flex-1 overflow-y-hidden">
+        <SyntaxHighlighter
+          language="python"
+          // @ts-ignore super weird issue with the react-highlighter package, it's not recognizing the style prop type as valid
+          style={atomOneDark}
+          showLineNumbers={true}
+          wrapLongLines={false}
+        >
+          {codeString}
+        </SyntaxHighlighter>
+      </div>
+      <div className="flex-none">
+        <div className="w-full bg-slate-900 border-b border-x-3 rounded-b-lg h-6 opacity-85 mb-6"></div>
+      </div>
+    </div>
+  );
+};
+
+export default ModelCompilationContent;

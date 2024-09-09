@@ -74,15 +74,14 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full md:w-7/12 md:mt-0 h-full pt-16 animate__animated animate__slideInUp">
-        <div className="relative bg-gray-500 bg-opacity-10 border border-black border-opacity-5 p-4 rounded-lg">
+      <div className="w-full md:w-7/12 md:mt-0 h-full pt-16 animate__animated animate__slideInUp flex">
+        <div className="relative bg-gray-500 bg-opacity-10 border border-black border-opacity-5 p-4 rounded-lg my-auto 2xl:scale-125 2xl:translate-x-1/4 will-change-transform">
           <img
-            src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bffc29d57182974e3c118_Dashboard%20White.jpg"
-            loading="lazy"
+            src="https://tensorcraft.s3.us-east-2.amazonaws.com/TensorCraftLandingPage.png"
             alt="Dashboard"
-            className=""
+            className="object-contain will-change-transform"
             style={{ zIndex: 1 }}
-            object-fit="cover"
+            object-fit=""
           />
 
           <div className="absolute bottom-0 left-1/5 p-6 border border-gray-200 rounded-3xl bg-white bg-opacity-75 shadow-md translate-y-1/4 translate-x-full">
@@ -90,15 +89,15 @@ const Hero: React.FC = () => {
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 blur-lg absolute"
+              className="w-10 blur-lg absolute"
             />
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/pytorch/pytorch-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 absolute"
+              className="w-10 absolute"
             />
-            <div className="w-16 h-16"></div>
+            <div className="w-10 h-10"></div>
           </div>
 
           <div className="absolute top-0 right-1/2 p-6 border border-gray-200 rounded-3xl bg-white bg-opacity-75 shadow-md translate-y-1/4 translate-x-full">
@@ -106,15 +105,15 @@ const Hero: React.FC = () => {
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/keras/keras-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 blur-md absolute"
+              className="w-10 blur-md absolute"
             />
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/keras/keras-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 absolute"
+              className="w-10 absolute"
             />
-            <div className="w-16 h-16"></div>
+            <div className="w-10 h-10"></div>
           </div>
 
           <div className="absolute top-0 left-0 p-6 border border-gray-200 rounded-3xl -translate-x-6 -translate-y-6 bg-white bg-opacity-75 shadow-md">
@@ -122,15 +121,15 @@ const Hero: React.FC = () => {
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 blur-lg absolute"
+              className="w-10 blur-lg absolute"
             />
             <img
               src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/tensorflow/tensorflow-original.svg"
               loading="lazy"
               alt="Logo 3"
-              className="w-16 absolute"
+              className="w-10 absolute"
             />
-            <div className="w-16 h-16"></div>
+            <div className="w-10 h-10"></div>
           </div>
         </div>
 

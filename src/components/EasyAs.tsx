@@ -100,7 +100,7 @@ const EasyAs: React.FC = () => {
                 : "text-gray-400"
               }`}
           >
-            b Paper to Code
+            Connect Your Layers
           </label>
         </li>
         <li className="flex-1 text-center flex">
@@ -119,7 +119,7 @@ const EasyAs: React.FC = () => {
                 : "text-gray-400"
               }`}
           >
-            Natural Language Model Builder
+            Define Your Layers
           </label>
         </li>
         <li className="flex-1 text-center flex">
@@ -138,7 +138,7 @@ const EasyAs: React.FC = () => {
                 : "text-gray-400"
               }`}
           >
-            Model Compilation & ds
+            Watch Your Model Compile
           </label>
         </li>
       </ul>

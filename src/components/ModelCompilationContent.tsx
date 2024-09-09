@@ -194,13 +194,13 @@ const ModelCompilationContent: React.FC<ModelCompilationType> = ({isCollapsed}) 
       });
   };
 
-  const handleCopyNodes = () => {
-    copyToClipboard(JSON.stringify(nodes, null, 2));
-  };
+  // const handleCopyNodes = () => {
+  //   copyToClipboard(JSON.stringify(nodes, null, 2));
+  // };
 
-  const handleCopyEdges = () => {
-    copyToClipboard(JSON.stringify(edges, null, 2));
-  };
+  // const handleCopyEdges = () => {
+  //   copyToClipboard(JSON.stringify(edges, null, 2));
+  // };
 
   return (
     <div className="flex flex-col h-full mx-6">

@@ -50,11 +50,12 @@ const Header = () => {
                 </span>
               </div>
               <div className="invisible absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50 py-1 px-4 text-gray-800 group-hover:visible">
-                <Link to="/myaccount" className="block my-2 py-2 font-semibold text-gray-500 hover:text-black">Account</Link>
+                {/* <Link to="/myaccount" className="block my-2 py-2 font-semibold text-gray-500 hover:text-black">Account</Link> */}
                 <button onClick={handleSignOut} className="block w-full text-left my-2 py-2 font-semibold text-gray-500 hover:text-black">Sign Out</button>
               </div>
             </div>
           ) : (
+            
             <Link to="/signin" className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-center">Sign In</Link>
           )}
         </div>

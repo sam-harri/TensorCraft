@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Hero: React.FC = () => {
   const handleScroll = () => {
-    const featuresSection = document.getElementById("features-section");
+    const featuresSection = document.getElementById("easyas");
     if (featuresSection) {
       const offset = -100; // Adjust this value based on your header height
       const bodyRect = document.body.getBoundingClientRect().top;
@@ -51,7 +51,7 @@ const Hero: React.FC = () => {
               onClick={handleScroll}
               className="bg-gray-100 text-black border border-black px-4 py-2 rounded-lg flex items-center hover:scale-105 transition-transform duration-300 cursor-pointer"
             >
-              <div>What else?</div>
+              <div>How To</div>
               <img
                 src="https://assets-global.website-files.com/661bf78957ad86c050eb493b/661bfaf9072a996e07cc844b_Arrow%20Black.svg"
                 loading="lazy"

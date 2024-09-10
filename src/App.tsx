@@ -10,7 +10,7 @@ import ResetPassword from './pages/ResetPassword';
 import ConfirmEmail from './pages/ConfirmEmail';
 import NoMatch from './pages/NoMatch';
 import Header from './components/Header'
-import Dashboard from './pages/Dashboard';
+// import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
   return (
@@ -18,7 +18,7 @@ const App: React.FC = () => {
       <Route path="/" element={<Header />}>
         <Route index element={<LandingPage />} />
         <Route path="craft" element={<Craft />} />
-        <Route path="/myaccount" element={<Dashboard />} />
+        {/* <Route path="/myaccount" element={<Dashboard />} /> */}
       </Route>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/createaccount" element={<CreateAccount />} />

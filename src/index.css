@@ -78,3 +78,22 @@
   }
   
 }
+
+@layer utilities {
+  .video-force-render {
+    will-change: transform, opacity;
+    transform: none; /* Force no transform */
+    backface-visibility: hidden; /* Ensures better rendering quality */
+    perspective: 1000px; /* Forces the browser to use better rendering techniques */
+    contain: layout; /* Isolates video layout to avoid reflows */
+    image-rendering: pixelated; /* Forces pixelated rendering, if applicable */
+  }
+  .disable-gpu-accel {
+    transform: none; /* Disable GPU acceleration */
+    backface-visibility: visible; /* Forces normal rendering */
+  }
+  .object-fill {
+    object-fit: fill; /* Ensures the video doesn’t stretch or rescale incorrectly */
+  }
+}
+

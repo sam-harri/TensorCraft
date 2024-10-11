@@ -19,7 +19,7 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <div className="relative container mx-auto pl-4 py-20 flex flex-col md:flex-row items-center justify-between h-screen pt-16">
+<div className="relative w-screen max-w-full overflow-x-hidden overflow-y-visible pl-4 pt-20 md:pt-28 pb-40 flex flex-col md:flex-row items-center justify-between min-h-screen">
       <div className="w-full md:w-5/12 md:ml-auto min-w-[300px] space-y-4 z-10">
         <div
           className="animate__animated animate__fadeIn lg:ml-40 mt-24"

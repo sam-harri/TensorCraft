@@ -75,7 +75,7 @@ const EasyAs: React.FC = () => {
   const getDescriptionText = () => {
     switch (selected) {
       case "a":
-        return "draging layers and operators over from the toolbox into the playground";
+        return "dragging layers and operators over from the toolbox into the playground";
       case "b":
         return "connecting, deleting, and moving layers";
       case "c":
@@ -90,7 +90,7 @@ const EasyAs: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className={`container mx-auto px-4 lg:w-2/3 mt-32 ${isVisible ? "animate__animated animate__slideInUp" : ""
+      className={`container mx-auto px-4 lg:w-2/3 ${isVisible ? "animate__animated animate__slideInUp" : ""
         }`}
       id='easyas'
     >
@@ -199,38 +199,38 @@ const EasyAs: React.FC = () => {
         {isVisible && (
           <>
             <div
-              className={`absolute top-16 right-0 w-60 h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "c" ? "opacity-100" : "opacity-0"
+              className={`absolute top-16 right-0 w-20 md:w-60 h-20 md:h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "c" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
             <div
-              className={`absolute bottom-0 left-0 w-80 h-80 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "c" ? "opacity-100" : "opacity-0"
-                }`}
-            ></div>
-
-            <div
-              className={`absolute top-32 -left-6 w-60 h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "b" ? "opacity-100" : "opacity-0"
-                }`}
-            ></div>
-            <div
-              className={`absolute bottom-0 right-0 w-80 h-80 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "b" ? "opacity-100" : "opacity-0"
+              className={`absolute bottom-0 left-0 w-20 md:w-60 h-20 md:h-60 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "c" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
 
             <div
-              className={`absolute bottom-32 right-0 w-60 h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "a" ? "opacity-100" : "opacity-0"
+              className={`absolute top-32 -left-6 w-20 md:w-60 h-20 md:h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "b" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
             <div
-              className={`absolute top-16 left-0 w-80 h-80 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "a" ? "opacity-100" : "opacity-0"
+              className={`absolute bottom-0 right-0 w-20 md:w-60 h-20 md:h-60 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "b" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
 
             <div
-              className={`absolute bottom-12 left-0 w-60 h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "d" ? "opacity-100" : "opacity-0"
+              className={`absolute bottom-32 right-0 w-20 md:w-60 h-20 md:h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "a" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
             <div
-              className={`absolute top-12 right-0 w-80 h-80 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "d" ? "opacity-100" : "opacity-0"
+              className={`absolute top-16 left-0 w-20 md:w-60 h-20 md:h-60 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "a" ? "opacity-100" : "opacity-0"
+                }`}
+            ></div>
+
+            <div
+              className={`absolute bottom-12 left-0 w-20 md:w-60 h-20 md:h-60 bg-green-500 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "d" ? "opacity-100" : "opacity-0"
+                }`}
+            ></div>
+            <div
+              className={`absolute top-12 right-0 w-20 md:w-60 h-20 md:h-60 bg-red-400 rounded-full blur-3xl -z-50 transition-opacity duration-500 ${selected === "d" ? "opacity-100" : "opacity-0"
                 }`}
             ></div>
           </>

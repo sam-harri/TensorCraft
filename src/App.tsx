@@ -11,6 +11,7 @@ import ConfirmEmail from './pages/ConfirmEmail';
 import NoMatch from './pages/NoMatch';
 import Header from './components/Header'
 // import Dashboard from './pages/Dashboard';
+// adding this comment to test the vercel branch preview integration
 
 const App: React.FC = () => {
   return (
